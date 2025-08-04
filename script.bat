@@ -1,0 +1,1 @@
+g++ source_files/planet.cpp source_files/universe.cpp source_files/main.cpp -lraylib -lgdi32 -lwinmm
