@@ -1,1 +1,1 @@
-g++ source_files/planet.cpp source_files/universe.cpp source_files/main.cpp -lraylib -lgdi32 -lwinmm
+g++ source_files/planet.cpp source_files/gravitational_grid_2d.cpp source_files/universe.cpp source_files/main.cpp -lraylib -lgdi32 -lwinmm -g
