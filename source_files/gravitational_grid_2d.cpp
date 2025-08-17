@@ -17,23 +17,24 @@ Gravitational_Grid_2D::~Gravitational_Grid_2D(){
 }
 
 void Gravitational_Grid_2D::calculateGrid(const std::vector<Planet>& planets){
-    double distance;
+    long double distance;
+    long double f;
     for(auto &it : planets){
         for(int i=0;i<amount_of_nodes;++i){
             for(int j=0;j<amount_of_nodes;++j){
                 distance=(it.getPosition().x-grid[i*this->amount_of_nodes+j].x)*(it.getPosition().x-grid[i*this->amount_of_nodes+j].x)
                 +(it.getPosition().z-grid[i*this->amount_of_nodes+j].z)*(it.getPosition().z-grid[i*this->amount_of_nodes+j].z);
-                if(distance<fabs(start_pos.x*2/amount_of_nodes)){
-                    distance=fabs(start_pos.x*2/amount_of_nodes);
+                if(distance<1e4l){
+                    distance=1e4l;
                 }
 
-                grid[i*this->amount_of_nodes+j].y-=G*(it.getMass()*0.001l)/(distance);
+                f=G*(it.getMass()*0.001l)/distance;
+                grid[i*this->amount_of_nodes+j].y-=f;
             }
         }
-    }
+    }   
 }
 
-//fix tomorrow
 void Gravitational_Grid_2D::drawGrid(const double distance_const){
     for(int i=0;i<this->amount_of_nodes-1;++i){
         for(int j=0;j<this->amount_of_nodes-1;++j){

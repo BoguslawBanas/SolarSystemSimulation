@@ -18,22 +18,21 @@ void Universe::calculateGravitiesOfPlanets(const double mult){
         return;
     }
 
-    for(int j=1;j<this->planets.size();++j){
-        this->planets[j].calcVelocityFromGravity(this->planets[0], mult);
+    for(int m=0;m<mult;++m){
+        for(int i=0;i<this->planets.size();++i){
+            for(int j=i+1;j<this->planets.size();++j){
+                this->planets[i].calcVelocityFromGravity(this->planets[j], mult);
+            }
+        }
+
+        for(int i=0;i<this->planets.size();++i){
+            this->planets[i].movePlanet();
+        }
     }
 }
 
 void Universe::drawUniverse(const double radius_const, const double orbital_const){
-    // for(auto &it : this->planets){
-    //     it.drawPlanet();
-    // }
-    //change later
     for(int i=0;i<this->planets.size();++i){
-        if(i==0){
-            this->planets[i].drawPlanet(1e5, orbital_const);
-        }
-        else{
-            this->planets[i].drawPlanet(radius_const, orbital_const);
-        }
+        this->planets[i].drawPlanet(radius_const, orbital_const);
     }
 }
