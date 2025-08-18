@@ -1,5 +1,4 @@
 #include "../header_files/universe.h"
-#include <raylib.h>
 
 Universe::Universe(){
     this->planets=std::vector<Planet>();
