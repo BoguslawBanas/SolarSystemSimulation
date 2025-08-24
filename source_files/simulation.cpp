@@ -4,7 +4,7 @@
 
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
-    this->grid2d=new Gravitational_Grid_2D((Vector2){-5e9, -5e9}, 100, -5.0);
+    this->grid2d=new Gravitational_Grid_2D((Vector2){-1e9, -1e9}, 100, -5.0);
 
     this->camera={0};
     this->camera.fovy=45.f;
@@ -74,16 +74,36 @@ void Simulation::calcLogic(){
         if(this->state==START_MENU_2){
             this->state=START_MENU;
         }
-        //more conditions will be added later.
-        else{
-            this->state=START_MENU;
+        else if(this->state==ADD_PLANET_MENU){
+            this->state=SIMULATION;
         }
+        else if(this->state==DELETE_PLANET_MENU){
+            this->state=SIMULATION;
+        }
+    }
+    else if(buttons["Add_planet"]){
+        buttons["Add_planet"]=false;
+        this->state=ADD_PLANET_MENU;
+        this->universe->addTmpPlanetToUniverse(WHITE);
+    }
+    else if(buttons["Delete_planet"]){
+        buttons["Delete_planet"]=false;
+        this->state=DELETE_PLANET_MENU;
+        this->universe->deleteTmpPlanetFromUniverse();
     }
 }
 
 void Simulation::drawSimulation(){
     static float mult=1.f;
     static char mult_str[10];
+    static bool is_camera_locked=false;
+    static float radius=1.f;
+    static float mass=1.f;
+    static float angle=0.f;
+    static float distance_from_center=0.1f;
+    if(IsKeyPressed(KEY_L)){
+        is_camera_locked=!is_camera_locked;
+    }
     BeginDrawing();
 
     ClearBackground(BLACK);
@@ -102,7 +122,9 @@ void Simulation::drawSimulation(){
             universe->calculateGravitiesOfPlanets(mult);
             grid2d->calculateGrid(universe->planets);
 
-            UpdateCameraCustom(&camera, CAMERA_FIRST_PERSON);
+            if(!is_camera_locked){
+                UpdateCameraCustom(&camera, CAMERA_FIRST_PERSON);
+            }
 
             BeginMode3D(camera);
 
@@ -111,8 +133,8 @@ void Simulation::drawSimulation(){
 
             EndMode3D();
 
-            GuiButton((Rectangle){24, 24, 120, 30}, "Add planet.");
-            GuiButton((Rectangle){this->window_width-120-24, 24, 120, 30}, "Delete planet.");
+            buttons["Add_planet"]=GuiButton((Rectangle){24, 24, 120, 30}, "Add planet.");
+            buttons["Delete_planet"]=GuiButton((Rectangle){this->window_width-120-24, 24, 120, 30}, "Delete planet.");
 
             GuiSlider((Rectangle{300, 24, 400, 30}), "0", "100", &mult, 0.f, 100.f);
             snprintf(mult_str, 10, "%f", mult);
@@ -121,7 +143,31 @@ void Simulation::drawSimulation(){
             buttons["Exit"]=GuiButton((Rectangle){24, this->window_height-40, 120, 30}, "Exit.");
         }break;
         case ADD_PLANET_MENU:{
+            universe->calculateGravitiesOfPlanets(mult);
+            grid2d->calculateGrid(universe->planets);
 
+            BeginMode3D(camera);
+
+            universe->drawUniverse(DIVIDE_CONST, DISTANCE_CONST);
+            grid2d->drawGrid(DISTANCE_CONST);
+
+            EndMode3D();
+
+            DrawRectangle(3*this->window_width/4, 0, this->window_width/4, this->window_height, WHITE);
+
+            GuiSlider((Rectangle){3*this->window_width/4+20, 150, 180, 30}, "0", "max", &mass, 0.f, 1e30f);
+            GuiSlider((Rectangle){3*this->window_width/4+20, 300, 180, 30}, "0", "max", &radius, 0.f, SUN_RADIUS);
+            GuiSlider((Rectangle){3*this->window_width/4+20, 450, 180, 30}, "0", "6.28", &angle, 0.f, 2*M_PI);
+            GuiSlider((Rectangle){3*this->window_width/4+20, 600, 180, 30}, "0", "max", &distance_from_center, 0.f, PLUTO_DISTANCE_FROM_SUN);
+
+            buttons["Go_back"]=GuiButton((Rectangle){5*this->window_width/6, 850, 100, 30}, "Go back.");
+
+            this->universe->setOptionsForTmpPlanet(radius, mass, angle, distance_from_center);
+
+            if(GuiButton((Rectangle){5*this->window_width/6+130, 850, 100, 30}, "Accept planet.")){
+                universe->acceptPlanetToUniverse();
+                buttons["Go_back"]=true;
+            }
         }break;
         case DELETE_PLANET_MENU:{
 
@@ -129,7 +175,7 @@ void Simulation::drawSimulation(){
         case PAUSE:{
 
         }break;
-        case EXIT: break;
+        default: break;
     }
 
     EndDrawing();

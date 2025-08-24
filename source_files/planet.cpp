@@ -10,6 +10,16 @@ Planet::Planet(long double x, long double y, long double z, float velX, float ve
 
 Planet::~Planet()=default;
 
+Planet Planet::copyPlanet(){
+    Vector3 new_pos=this->position;
+    Vector3 new_vel=this->velocity;
+    long double new_radius=this->radius;
+    long double new_mass=this->mass;
+    Color new_color=this->color;
+
+    return Planet(new_pos.x, new_pos.y, new_pos.z, new_vel.x, new_vel.y, new_vel.z, new_radius, new_mass, new_color);
+}
+
 const Vector3& Planet::getPosition() const{
     return this->position;
 }
@@ -30,12 +40,24 @@ long double Planet::getRadius() const{
     return this->radius;
 }
 
+void Planet::setRadius(const long double new_radius){
+    this->radius=new_radius;
+}
+
 long double Planet::getMass() const{
     return this->mass;
 }
 
+void Planet::setMass(const long double new_mass){
+    this->mass=new_mass;
+}
+
 Color Planet::getColor() const{
     return this->color;
+}
+
+void Planet::setColor(const Color new_color){
+    this->color=new_color;
 }
 
 long double Planet::calcDistance(const Planet &planet) const{

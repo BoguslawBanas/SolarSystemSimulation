@@ -18,6 +18,8 @@ class Planet{
 
     ~Planet();
 
+    Planet copyPlanet();
+
     const Vector3 &getPosition() const;
 
     const Vector3 &getVelocity() const;
@@ -28,9 +30,15 @@ class Planet{
 
     long double getRadius() const;
 
+    void setRadius(const long double);
+
     long double getMass() const;
 
+    void setMass(const long double);
+
     Color getColor() const;
+
+    void setColor(const Color);
 
     long double calcDistance(const Planet&) const;
 

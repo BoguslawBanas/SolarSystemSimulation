@@ -1,11 +1,15 @@
 #include "../header_files/universe.h"
 
+// #include <iostream>
+
 Universe::Universe(){
     this->planets=std::vector<Planet>();
+    this->tmp_planet=NULL;
 }
 
 Universe::~Universe(){
     this->planets.clear();
+    delete this->tmp_planet;
 }
 
 void Universe::addPlanetToUniverse(const Planet &planet){
@@ -34,4 +38,46 @@ void Universe::drawUniverse(const double radius_const, const double orbital_cons
     for(int i=0;i<this->planets.size();++i){
         this->planets[i].drawPlanet(radius_const, orbital_const);
     }
+
+    if(tmp_planet){
+        this->tmp_planet->drawPlanet(radius_const, orbital_const);
+    }
+}
+
+void Universe::addTmpPlanetToUniverse(const Color color){
+    this->tmp_planet=new Planet(0.l, 0.l, 0.l, 0.l, 0.l, 0.l, 0.1l, SUN_MASS, color);
+}
+
+void Universe::deleteTmpPlanetFromUniverse(){
+    delete this->tmp_planet;
+    this->tmp_planet=NULL;
+}
+
+void Universe::setOptionsForTmpPlanet(const long double radius, const long double mass, const float angle, const long double distance_from_sun){
+    this->tmp_planet->setRadius(radius);
+    this->tmp_planet->setMass(mass);
+    this->tmp_planet->setPosition((Vector3){distance_from_sun, this->tmp_planet->getPosition().y, this->tmp_planet->getPosition().z});
+    
+    float tan_an=tanf(angle);
+    long double x_2=(distance_from_sun*distance_from_sun)/(1.f+tan_an*tan_an);
+    long double y_2=(distance_from_sun*distance_from_sun)-x_2;
+
+    long double x=sqrtl(x_2);
+    long double y=sqrtl(y_2);
+    
+    if(angle>M_PI_2 && angle<(3*M_PI_2)){
+        x=-x;
+    }
+    if(angle>M_PI && angle<(2*M_PI)){
+        y=-y;
+    }
+
+    this->tmp_planet->setPosition((Vector3){x, this->tmp_planet->getPosition().y, y});
+    // std::cout<<this->tmp_planet->getRadius()<<' '<<this->tmp_planet->getMass()<<' '<<this->tmp_planet->getPosition().x<<' '<<this->tmp_planet->getPosition().z<<'\n';
+}
+
+void Universe::acceptPlanetToUniverse(){
+    Planet new_planet=this->tmp_planet->copyPlanet();
+    this->addPlanetToUniverse(new_planet);
+    deleteTmpPlanetFromUniverse();
 }
