@@ -1,7 +1,5 @@
 #include "../header_files/universe.h"
 
-// #include <iostream>
-
 Universe::Universe(){
     this->planets=std::vector<Planet>();
     this->tmp_planet=NULL;
@@ -10,6 +8,14 @@ Universe::Universe(){
 Universe::~Universe(){
     this->planets.clear();
     delete this->tmp_planet;
+}
+
+std::vector<Planet>& Universe::getPlanets(){
+    return this->planets;
+}
+
+Planet* Universe::getTmpPlanet() const{
+    return this->tmp_planet;
 }
 
 void Universe::addPlanetToUniverse(const Planet &planet){
@@ -53,10 +59,11 @@ void Universe::deleteTmpPlanetFromUniverse(){
     this->tmp_planet=NULL;
 }
 
-void Universe::setOptionsForTmpPlanet(const long double radius, const long double mass, const float angle, const long double distance_from_sun){
+void Universe::setOptionsForTmpPlanet(const long double radius, const long double mass, const float angle, const long double distance_from_sun, const Color new_color){
     this->tmp_planet->setRadius(radius);
     this->tmp_planet->setMass(mass);
     this->tmp_planet->setPosition((Vector3){distance_from_sun, this->tmp_planet->getPosition().y, this->tmp_planet->getPosition().z});
+    this->tmp_planet->setColor(new_color);
     
     float tan_an=tanf(angle);
     long double x_2=(distance_from_sun*distance_from_sun)/(1.f+tan_an*tan_an);
@@ -73,7 +80,6 @@ void Universe::setOptionsForTmpPlanet(const long double radius, const long doubl
     }
 
     this->tmp_planet->setPosition((Vector3){x, this->tmp_planet->getPosition().y, y});
-    // std::cout<<this->tmp_planet->getRadius()<<' '<<this->tmp_planet->getMass()<<' '<<this->tmp_planet->getPosition().x<<' '<<this->tmp_planet->getPosition().z<<'\n';
 }
 
 void Universe::acceptPlanetToUniverse(){

@@ -1,10 +1,10 @@
 #include "../header_files/simulation.h"
 #include "../header_files/rcamera.h"
-#include "../header_files/raygui.h"
 
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
     this->grid2d=new Gravitational_Grid_2D((Vector2){-1e9, -1e9}, 100, -5.0);
+    this->add_planet_menu=NULL;
 
     this->camera={0};
     this->camera.fovy=45.f;
@@ -32,6 +32,7 @@ Simulation::Simulation(int width, int height){
 Simulation::~Simulation(){
     delete this->universe;
     delete this->grid2d;
+    delete this->add_planet_menu;
     CloseWindow();
 }
 
@@ -40,7 +41,7 @@ Simulation_State Simulation::getState() const{
 }
 
 void Simulation::calcLogic(){
-    if(IsKeyPressed(KEY_ESCAPE)){
+    if(IsKeyPressed(KEY_ESCAPE) || WindowShouldClose()){
         this->state=EXIT;
     }
     else if(buttons["Start_sim"]){
@@ -75,6 +76,9 @@ void Simulation::calcLogic(){
             this->state=START_MENU;
         }
         else if(this->state==ADD_PLANET_MENU){
+            this->universe->deleteTmpPlanetFromUniverse();
+            delete this->add_planet_menu;
+            this->add_planet_menu=NULL;
             this->state=SIMULATION;
         }
         else if(this->state==DELETE_PLANET_MENU){
@@ -85,6 +89,7 @@ void Simulation::calcLogic(){
         buttons["Add_planet"]=false;
         this->state=ADD_PLANET_MENU;
         this->universe->addTmpPlanetToUniverse(WHITE);
+        this->add_planet_menu=new Add_Planet_Menu(this->window_width/4, this->window_height, 3*this->window_width/4);
     }
     else if(buttons["Delete_planet"]){
         buttons["Delete_planet"]=false;
@@ -97,10 +102,7 @@ void Simulation::drawSimulation(){
     static float mult=1.f;
     static char mult_str[10];
     static bool is_camera_locked=false;
-    static float radius=1.f;
-    static float mass=1.f;
-    static float angle=0.f;
-    static float distance_from_center=0.1f;
+
     if(IsKeyPressed(KEY_L)){
         is_camera_locked=!is_camera_locked;
     }
@@ -120,11 +122,7 @@ void Simulation::drawSimulation(){
         }break;
         case SIMULATION:{
             universe->calculateGravitiesOfPlanets(mult);
-            grid2d->calculateGrid(universe->planets);
-
-            if(!is_camera_locked){
-                UpdateCameraCustom(&camera, CAMERA_FIRST_PERSON);
-            }
+            grid2d->calculateGrid(universe->getPlanets());
 
             BeginMode3D(camera);
 
@@ -132,6 +130,13 @@ void Simulation::drawSimulation(){
             grid2d->drawGrid(DISTANCE_CONST);
 
             EndMode3D();
+
+            if(!is_camera_locked){
+                UpdateCameraCustom(&camera, CAMERA_FIRST_PERSON);
+            }
+            else{
+                DrawText("CAMERA LOCKED", 900, 30, 15, RED);
+            }
 
             buttons["Add_planet"]=GuiButton((Rectangle){24, 24, 120, 30}, "Add planet.");
             buttons["Delete_planet"]=GuiButton((Rectangle){this->window_width-120-24, 24, 120, 30}, "Delete planet.");
@@ -144,7 +149,7 @@ void Simulation::drawSimulation(){
         }break;
         case ADD_PLANET_MENU:{
             universe->calculateGravitiesOfPlanets(mult);
-            grid2d->calculateGrid(universe->planets);
+            grid2d->calculateGrid(universe->getPlanets());
 
             BeginMode3D(camera);
 
@@ -153,16 +158,11 @@ void Simulation::drawSimulation(){
 
             EndMode3D();
 
-            DrawRectangle(3*this->window_width/4, 0, this->window_width/4, this->window_height, WHITE);
+            this->add_planet_menu->drawMenu();
 
-            GuiSlider((Rectangle){3*this->window_width/4+20, 150, 180, 30}, "0", "max", &mass, 0.f, 1e30f);
-            GuiSlider((Rectangle){3*this->window_width/4+20, 300, 180, 30}, "0", "max", &radius, 0.f, SUN_RADIUS);
-            GuiSlider((Rectangle){3*this->window_width/4+20, 450, 180, 30}, "0", "6.28", &angle, 0.f, 2*M_PI);
-            GuiSlider((Rectangle){3*this->window_width/4+20, 600, 180, 30}, "0", "max", &distance_from_center, 0.f, PLUTO_DISTANCE_FROM_SUN);
+            this->universe->setOptionsForTmpPlanet(add_planet_menu->getRadius(), add_planet_menu->getMass(), add_planet_menu->getAngle(), add_planet_menu->getDistanceFromCenter(), add_planet_menu->getColor());
 
             buttons["Go_back"]=GuiButton((Rectangle){5*this->window_width/6, 850, 100, 30}, "Go back.");
-
-            this->universe->setOptionsForTmpPlanet(radius, mass, angle, distance_from_center);
 
             if(GuiButton((Rectangle){5*this->window_width/6+130, 850, 100, 30}, "Accept planet.")){
                 universe->acceptPlanetToUniverse();
@@ -170,7 +170,16 @@ void Simulation::drawSimulation(){
             }
         }break;
         case DELETE_PLANET_MENU:{
+            for(int i=0;i<this->universe->getPlanets().size() && i<20;++i){
+                GuiCheckBox((Rectangle){50, 30+i*50, 15, 15}, "1", NULL);
+            }
 
+            buttons["Go_back"]=GuiButton((Rectangle){5*this->window_width/6, 850, 100, 30}, "Go back.");
+
+            if(GuiButton((Rectangle){5*this->window_width/6+130, 850, 100, 30}, "Delete planets.")){
+                universe->acceptPlanetToUniverse();
+                buttons["Go_back"]=true;
+            }
         }break;
         case PAUSE:{
 

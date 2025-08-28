@@ -1,3 +1,5 @@
+#define RAYGUI_IMPLEMENTATION
+
 #include "../header_files/simulation.h"
 
 int main(){

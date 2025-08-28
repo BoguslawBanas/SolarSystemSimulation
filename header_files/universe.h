@@ -6,7 +6,7 @@
 #include <math.h>
 
 class Universe{
-    public: //tmp later change to private
+    private: //tmp later change to private
     std::vector<Planet>planets;
     Planet *tmp_planet;
 
@@ -14,6 +14,10 @@ class Universe{
     Universe();
 
     ~Universe();
+
+    std::vector<Planet>& getPlanets();
+
+    Planet* getTmpPlanet() const;
 
     void addPlanetToUniverse(const Planet&);
 
@@ -25,7 +29,7 @@ class Universe{
 
     void deleteTmpPlanetFromUniverse();
 
-    void setOptionsForTmpPlanet(const long double, const long double, const float, const long double);
+    void setOptionsForTmpPlanet(const long double, const long double, const float, const long double, const Color);
 
     void acceptPlanetToUniverse();
 };
