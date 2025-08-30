@@ -5,6 +5,7 @@ Simulation::Simulation(int width, int height){
     this->universe=new Universe();
     this->grid2d=new Gravitational_Grid_2D((Vector2){-5e9, -5e9}, 200, -5.0);
     this->add_planet_menu=NULL;
+    this->delete_planet_menu=NULL;
 
     this->camera={0};
     this->camera.fovy=45.f;
@@ -55,16 +56,16 @@ void Simulation::calcLogic(){
     else if(buttons["Solar_system"]){
         buttons["Solar_system"]=false;
         this->state=SIMULATION;
-        universe->addPlanetToUniverse(Planet(0.1l, 0.1l, 0.l, 0.l, 0.l, 0.l, SUN_RADIUS/10, SUN_MASS, YELLOW)); //Sun
-        universe->addPlanetToUniverse(Planet(MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000.l*1.l, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN)); //Mercury
-        universe->addPlanetToUniverse(Planet(VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.73l, VENUS_RADIUS, VENUS_MASS, BROWN)); //Venus
-        universe->addPlanetToUniverse(Planet(EARTH_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.622l, EARTH_RADIUS, EARTH_MASS, GREEN)); //Earth
-        universe->addPlanetToUniverse(Planet(MARS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.503l, MARS_RADIUS, MARS_MASS, RED)); //Mars
-        universe->addPlanetToUniverse(Planet(JUPITER_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.273l, JUPITER_RADIUS, JUPITER_MASS, LIGHTGRAY)); //Jupiter
-        universe->addPlanetToUniverse(Planet(SATURN_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.203l, SATURN_RADIUS, SATURN_MASS, GRAY)); //Saturn
-        universe->addPlanetToUniverse(Planet(URANUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.142l, URANUS_RADIUS, URANUS_MASS, BLUE)); //Uranus
-        universe->addPlanetToUniverse(Planet(NEPTUNE_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.113l, NEPTUNE_RADIUS, NEPTUNE_MASS, BLUE)); //Neptune
-        universe->addPlanetToUniverse(Planet(PLUTO_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.099l, PLUTO_RADIUS, PLUTO_MASS, GRAY)); //Pluto
+        universe->addPlanetToUniverse(Planet(0.1l, 0.1l, 0.l, 0.l, 0.l, 0.l, SUN_RADIUS/10, SUN_MASS, YELLOW, "Sun")); //Sun
+        universe->addPlanetToUniverse(Planet(MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000.l*1.l, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN, "Mercury")); //Mercury
+        universe->addPlanetToUniverse(Planet(VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.73l, VENUS_RADIUS, VENUS_MASS, BROWN, "Venus")); //Venus
+        universe->addPlanetToUniverse(Planet(EARTH_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.622l, EARTH_RADIUS, EARTH_MASS, GREEN, "Earth")); //Earth
+        universe->addPlanetToUniverse(Planet(MARS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.503l, MARS_RADIUS, MARS_MASS, RED, "Mars")); //Mars
+        universe->addPlanetToUniverse(Planet(JUPITER_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.273l, JUPITER_RADIUS, JUPITER_MASS, LIGHTGRAY, "Jupiter")); //Jupiter
+        universe->addPlanetToUniverse(Planet(SATURN_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.203l, SATURN_RADIUS, SATURN_MASS, GRAY, "Saturn")); //Saturn
+        universe->addPlanetToUniverse(Planet(URANUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.142l, URANUS_RADIUS, URANUS_MASS, BLUE, "Uranus")); //Uranus
+        universe->addPlanetToUniverse(Planet(NEPTUNE_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.113l, NEPTUNE_RADIUS, NEPTUNE_MASS, BLUE, "Neptune")); //Neptune
+        universe->addPlanetToUniverse(Planet(PLUTO_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.099l, PLUTO_RADIUS, PLUTO_MASS, GRAY, "Pluto")); //Pluto
     }
     else if(buttons["Free_mode"]){
         buttons["Solar_system"]=false;
@@ -82,6 +83,8 @@ void Simulation::calcLogic(){
             this->state=SIMULATION;
         }
         else if(this->state==DELETE_PLANET_MENU){
+            delete this->delete_planet_menu;
+            this->delete_planet_menu=NULL;
             this->state=SIMULATION;
         }
     }
@@ -94,7 +97,7 @@ void Simulation::calcLogic(){
     else if(buttons["Delete_planet"]){
         buttons["Delete_planet"]=false;
         this->state=DELETE_PLANET_MENU;
-        this->universe->deleteTmpPlanetFromUniverse();
+        this->delete_planet_menu=new Delete_Planet_Menu(universe->getPlanets().size());
     }
 }
 
@@ -170,14 +173,13 @@ void Simulation::drawSimulation(){
             }
         }break;
         case DELETE_PLANET_MENU:{
-            for(int i=0;i<this->universe->getPlanets().size() && i<20;++i){
-                GuiCheckBox((Rectangle){50, 30+i*50, 15, 15}, "1", NULL);
+            delete_planet_menu->drawMenu(this->universe->getPlanets());
+
+            if(delete_planet_menu->getGoBackButton()){
+                buttons["Go_back"]=true;
             }
-
-            buttons["Go_back"]=GuiButton((Rectangle){5*this->window_width/6, 850, 100, 30}, "Go back.");
-
-            if(GuiButton((Rectangle){5*this->window_width/6+130, 850, 100, 30}, "Delete planets.")){
-                universe->acceptPlanetToUniverse();
+            else if(delete_planet_menu->getDeletePlanets()){
+                universe->deletePlanetsFromUniverse(delete_planet_menu->getToDelete());
                 buttons["Go_back"]=true;
             }
         }break;

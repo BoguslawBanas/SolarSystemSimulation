@@ -8,6 +8,7 @@
 #include <raymath.h>
 #include <map>
 #include "add_planet_menu.h"
+#include "delete_planet_menu.h"
 #include "universe.h"
 #include "gravitational_grid_2d.h"
 
@@ -26,6 +27,7 @@ class Simulation{
     Universe *universe;
     Gravitational_Grid_2D *grid2d;
     Add_Planet_Menu *add_planet_menu;
+    Delete_Planet_Menu *delete_planet_menu;
     Camera3D camera;
     Simulation_State state;
     int window_width;

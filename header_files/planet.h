@@ -4,6 +4,7 @@
 #include <raylib.h>
 #include <math.h>
 #include "solar_system_consts.h"
+#include <string>
 
 class Planet{
     private:
@@ -12,9 +13,10 @@ class Planet{
     long double radius;
     long double mass;
     Color color;
+    const char *name;
 
     public:
-    Planet(long double, long double, long double, float, float, float, long double, long double, Color);
+    Planet(long double, long double, long double, float, float, float, long double, long double, Color, const char*);
 
     ~Planet();
 
@@ -39,6 +41,8 @@ class Planet{
     Color getColor() const;
 
     void setColor(const Color);
+
+    const char* getName() const;
 
     long double calcDistance(const Planet&) const;
 

@@ -1,11 +1,12 @@
 #include "../header_files/planet.h"
 
-Planet::Planet(long double x, long double y, long double z, float velX, float velY, float velZ, long double radius, long double mass, Color color){
+Planet::Planet(long double x, long double y, long double z, float velX, float velY, float velZ, long double radius, long double mass, Color color, const char *name){
     this->position=(Vector3){x, y, z};
     this->velocity=(Vector3){velX, velY, velZ};
     this->radius=radius;
     this->mass=mass;
     this->color=color;
+    this->name=name;
 }
 
 Planet::~Planet()=default;
@@ -17,7 +18,7 @@ Planet Planet::copyPlanet(){
     long double new_mass=this->mass;
     Color new_color=this->color;
 
-    return Planet(new_pos.x, new_pos.y, new_pos.z, new_vel.x, new_vel.y, new_vel.z, new_radius, new_mass, new_color);
+    return Planet(new_pos.x, new_pos.y, new_pos.z, new_vel.x, new_vel.y, new_vel.z, new_radius, new_mass, new_color, this->name);
 }
 
 const Vector3& Planet::getPosition() const{
@@ -58,6 +59,10 @@ Color Planet::getColor() const{
 
 void Planet::setColor(const Color new_color){
     this->color=new_color;
+}
+
+const char* Planet::getName() const{
+    return this->name;
 }
 
 long double Planet::calcDistance(const Planet &planet) const{

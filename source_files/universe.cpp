@@ -51,7 +51,7 @@ void Universe::drawUniverse(const double radius_const, const double orbital_cons
 }
 
 void Universe::addTmpPlanetToUniverse(const Color color){
-    this->tmp_planet=new Planet(0.l, 0.l, 0.l, 0.l, 0.l, 0.l, 0.1l, SUN_MASS, color);
+    this->tmp_planet=new Planet(0.l, 0.l, 0.l, 0.l, 0.l, 0.l, 0.1l, SUN_MASS, color, "");
 }
 
 void Universe::deleteTmpPlanetFromUniverse(){
@@ -87,4 +87,26 @@ void Universe::acceptPlanetToUniverse(){
     Planet new_planet=this->tmp_planet->copyPlanet();
     this->addPlanetToUniverse(new_planet);
     deleteTmpPlanetFromUniverse();
+}
+
+void Universe::deletePlanetsFromUniverse(const std::vector<char>&planets_to_delete){
+    //tmp, change later
+    std::vector<const char*>planets_to_remove;
+    for(int i=0;i<this->planets.size();++i){
+        if(planets_to_delete[i]){
+            planets_to_remove.push_back(planets[i].getName());
+        }
+    }
+
+    int i=0;
+    int j=0;
+    while(i<this->planets.size()){
+        if(this->planets[i].getName()==planets_to_remove[j]){
+            this->planets.erase(this->planets.begin()+i);
+            ++j;
+        }
+        else{
+            ++i;
+        }
+    }
 }

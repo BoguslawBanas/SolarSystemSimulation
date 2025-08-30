@@ -32,6 +32,8 @@ class Universe{
     void setOptionsForTmpPlanet(const long double, const long double, const float, const long double, const long double, const Color);
 
     void acceptPlanetToUniverse();
+
+    void deletePlanetsFromUniverse(const std::vector<char>&);
 };
 
 #endif
