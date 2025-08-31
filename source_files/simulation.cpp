@@ -3,7 +3,7 @@
 
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
-    this->grid2d=new Gravitational_Grid_2D((Vector2){-5e9, -5e9}, 200, -5.0);
+    this->grid2d=new Gravitational_Grid_2D((Vector2){-5e9, -5e9}, 100, -5.0);
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
 
@@ -97,7 +97,7 @@ void Simulation::calcLogic(){
     else if(buttons["Delete_planet"]){
         buttons["Delete_planet"]=false;
         this->state=DELETE_PLANET_MENU;
-        this->delete_planet_menu=new Delete_Planet_Menu(universe->getPlanets().size());
+        this->delete_planet_menu=new Delete_Planet_Menu(universe->getPlanets().size(), this->window_width/4, this->window_height, 3*this->window_width/4);
     }
 }
 
@@ -108,6 +108,10 @@ void Simulation::drawSimulation(){
 
     if(IsKeyPressed(KEY_L)){
         is_camera_locked=!is_camera_locked;
+    }
+
+    if(IsKeyPressed(KEY_P)){
+        mult=0.f;
     }
     BeginDrawing();
 
@@ -173,6 +177,16 @@ void Simulation::drawSimulation(){
             }
         }break;
         case DELETE_PLANET_MENU:{
+            universe->calculateGravitiesOfPlanets(mult);
+            grid2d->calculateGrid(universe->getPlanets());
+
+            BeginMode3D(camera);
+
+            universe->drawUniverse(DIVIDE_CONST, DISTANCE_CONST);
+            grid2d->drawGrid(DISTANCE_CONST);
+
+            EndMode3D();
+
             delete_planet_menu->drawMenu(this->universe->getPlanets());
 
             if(delete_planet_menu->getGoBackButton()){

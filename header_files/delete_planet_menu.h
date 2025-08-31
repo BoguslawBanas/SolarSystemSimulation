@@ -8,12 +8,15 @@
 class Delete_Planet_Menu{
     private:
     unsigned amount_of_planets;
+    unsigned menu_width;
+    unsigned menu_height;
+    unsigned start_menu_width;
     bool go_back_button;
     bool delete_planets;
     std::vector<char>to_delete;
 
     public:
-    Delete_Planet_Menu(const unsigned);
+    Delete_Planet_Menu(const unsigned, const unsigned, const unsigned, const unsigned);
 
     ~Delete_Planet_Menu();
 
