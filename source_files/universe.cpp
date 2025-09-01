@@ -90,7 +90,6 @@ void Universe::acceptPlanetToUniverse(){
 }
 
 void Universe::deletePlanetsFromUniverse(const std::vector<char>&planets_to_delete){
-    //tmp, change later
     std::vector<const char*>planets_to_remove;
     for(int i=0;i<this->planets.size();++i){
         if(planets_to_delete[i]){

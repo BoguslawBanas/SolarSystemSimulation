@@ -32,7 +32,7 @@ void Gravitational_Grid_2D::calculateGrid(const std::vector<Planet>& planets){
                 grid[i*this->amount_of_nodes+j].y-=f;
             }
         }
-    }   
+    }
 }
 
 void Gravitational_Grid_2D::drawGrid(const double distance_const){
