@@ -44,6 +44,8 @@ class Planet{
 
     const char* getName() const;
 
+    void setName(const char*);
+
     long double calcDistance(const Planet&) const;
 
     double calcVelocityFromGravity(Planet&, const double);

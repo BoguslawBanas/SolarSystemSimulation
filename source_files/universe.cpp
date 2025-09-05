@@ -59,7 +59,8 @@ void Universe::deleteTmpPlanetFromUniverse(){
     this->tmp_planet=NULL;
 }
 
-void Universe::setOptionsForTmpPlanet(const long double radius, const long double mass, const float angle, const long double distance_from_sun, const long double velocity, const Color new_color){
+void Universe::setOptionsForTmpPlanet(const long double radius, const long double mass, const float angle, const long double distance_from_sun, const long double velocity, const Color new_color, const char* name){
+    this->tmp_planet->setName(name);
     this->tmp_planet->setRadius(radius);
     this->tmp_planet->setMass(mass);
     this->tmp_planet->setPosition((Vector3){distance_from_sun, this->tmp_planet->getPosition().y, this->tmp_planet->getPosition().z});

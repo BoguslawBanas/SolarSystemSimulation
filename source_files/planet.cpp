@@ -65,6 +65,10 @@ const char* Planet::getName() const{
     return this->name;
 }
 
+void Planet::setName(const char* new_name){
+    this->name=new_name;
+}
+
 long double Planet::calcDistance(const Planet &planet) const{
     return (this->getPosition().x-planet.getPosition().x)*(this->getPosition().x-planet.getPosition().x)+
     (this->getPosition().y-planet.getPosition().y)*(this->getPosition().y-planet.getPosition().y)+

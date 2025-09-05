@@ -13,6 +13,10 @@ Add_Planet_Menu::Add_Planet_Menu(unsigned menu_width, unsigned menu_height, unsi
 
 Add_Planet_Menu::~Add_Planet_Menu()=default;
 
+const char* Add_Planet_Menu::getName() const{
+    return this->name;
+}
+
 float Add_Planet_Menu::getRadius() const{
     return this->radius;
 }
@@ -46,23 +50,22 @@ void Add_Planet_Menu::drawMenu(){
 
     DrawRectangle(this->start_menu_width, 0, this->menu_width, this->menu_height, WHITE);
 
-    GuiSlider((Rectangle){this->start_menu_width+20, 120, 180, 30}, "0", "max", &this->mass, 0.f, 1e24f);
-    GuiTextBox((Rectangle){this->start_menu_width+230, 120, 120, 30}, this->mass_str, 10, true);
+    GuiTextBox((Rectangle){this->start_menu_width+20, 100, 180, 30}, this->name, 50, true);
 
-    GuiSlider((Rectangle){this->start_menu_width+20, 120, 180, 30}, "0", "max", &this->mass, 0.f, 1e24f);
-    GuiTextBox((Rectangle){this->start_menu_width+230, 120, 120, 30}, this->mass_str, 10, false);
+    GuiSlider((Rectangle){this->start_menu_width+20, 200, 180, 30}, "0", "max", &this->mass, 0.f, 1e24f);
+    GuiTextBox((Rectangle){this->start_menu_width+230, 200, 120, 30}, this->mass_str, 10, false);
 
-    GuiSlider((Rectangle){this->start_menu_width+20, 240, 180, 30}, "0", "max", &this->radius, 0.f, 1e6f);
-    GuiTextBox((Rectangle){this->start_menu_width+230, 240, 120, 30}, this->radius_str, 10, false);
+    GuiSlider((Rectangle){this->start_menu_width+20, 300, 180, 30}, "0", "max", &this->radius, 0.f, 1e6f);
+    GuiTextBox((Rectangle){this->start_menu_width+230, 300, 120, 30}, this->radius_str, 10, false);
 
-    GuiSlider((Rectangle){this->start_menu_width+20, 360, 180, 30}, "0", "6.28", &this->angle, 0.f, 2*M_PI);
-    GuiTextBox((Rectangle){this->start_menu_width+230, 360, 120, 30}, this->angle_str, 10, false);
+    GuiSlider((Rectangle){this->start_menu_width+20, 400, 180, 30}, "0", "6.28", &this->angle, 0.f, 2*M_PI);
+    GuiTextBox((Rectangle){this->start_menu_width+230, 400, 120, 30}, this->angle_str, 10, false);
 
-    GuiSlider((Rectangle){this->start_menu_width+20, 480, 180, 30}, "0", "max", &this->distance_from_center, 0.f, 1e9f);
-    GuiTextBox((Rectangle){this->start_menu_width+230, 480, 120, 30}, this->distance_from_center_str, 10, false);
+    GuiSlider((Rectangle){this->start_menu_width+20, 500, 180, 30}, "0", "max", &this->distance_from_center, 0.f, 1e9f);
+    GuiTextBox((Rectangle){this->start_menu_width+230, 500, 120, 30}, this->distance_from_center_str, 10, false);
 
     GuiSlider((Rectangle){this->start_menu_width+20, 600, 180, 30}, "0", "max", &this->velocity, 0.f, 1e6f);
     GuiTextBox((Rectangle){this->start_menu_width+230, 600, 120, 30}, this->velocity_str, 10, false);
 
-    GuiColorPicker((Rectangle){this->start_menu_width+20, 750, 180, 30}, "Choose color", &this->color);
+    GuiColorPicker((Rectangle){this->start_menu_width+20, 700, 180, 80}, "Choose color", &this->color);
 }

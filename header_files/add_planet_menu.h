@@ -22,11 +22,14 @@ class Add_Planet_Menu{
     char angle_str[15];
     char distance_from_center_str[15];
     char velocity_str[15];
+    char name[50];
 
     public:
     Add_Planet_Menu(unsigned, unsigned, unsigned);
 
     ~Add_Planet_Menu();
+
+    const char* getName() const;
 
     float getRadius() const;
 

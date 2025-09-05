@@ -3,7 +3,7 @@
 
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
-    this->grid2d=new Gravitational_Grid_2D((Vector2){-1e9, -1e9}, 120, -5.0);
+    this->grid2d=new Gravitational_Grid_2D((Vector2){-1e9, -1e9}, 150, -5.0);
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
 
@@ -167,7 +167,7 @@ void Simulation::drawSimulation(){
 
             this->add_planet_menu->drawMenu();
 
-            this->universe->setOptionsForTmpPlanet(add_planet_menu->getRadius(), add_planet_menu->getMass(), add_planet_menu->getAngle(), add_planet_menu->getDistanceFromCenter(), add_planet_menu->getvelocity(), add_planet_menu->getColor());
+            this->universe->setOptionsForTmpPlanet(add_planet_menu->getRadius(), add_planet_menu->getMass(), add_planet_menu->getAngle(), add_planet_menu->getDistanceFromCenter(), add_planet_menu->getvelocity(), add_planet_menu->getColor(), add_planet_menu->getName());
 
             buttons["Go_back"]=GuiButton((Rectangle){5*this->window_width/6, 850, 100, 30}, "Go back.");
 

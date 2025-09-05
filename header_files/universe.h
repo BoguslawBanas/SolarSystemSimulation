@@ -29,7 +29,7 @@ class Universe{
 
     void deleteTmpPlanetFromUniverse();
 
-    void setOptionsForTmpPlanet(const long double, const long double, const float, const long double, const long double, const Color);
+    void setOptionsForTmpPlanet(const long double, const long double, const float, const long double, const long double, const Color, const char*);
 
     void acceptPlanetToUniverse();
 
