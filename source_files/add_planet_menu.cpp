@@ -59,6 +59,7 @@ void Add_Planet_Menu::drawMenu(){
     else if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
         this->is_name_text_field_clicked=false;
     }
+    DrawText("Insert name of the planet", this->start_menu_width+20, 80, 15, GRAY);
     GuiTextBox((Rectangle){this->start_menu_width+20, 100, 180, 30}, this->name, 50, this->is_name_text_field_clicked);
 
     this->mass_menu->drawMenu();
