@@ -110,3 +110,28 @@ void Universe::deletePlanetsFromUniverse(const std::vector<char>&planets_to_dele
         }
     }
 }
+
+int Universe::findPlanetPointedAt(const Camera3D &camera, const long double radius_divider, const long double distance_divider) const{
+    int result=-1;
+    for(int i=0;i<this->planets.size();++i){
+        if(this->planets[i].isCursorOnPlanet(camera, radius_divider, distance_divider)){
+            if(result==-1){
+                result=i;
+            }
+            else{
+                float d1=(camera.position.x-this->planets[result].getPosition().x)*(camera.position.x-this->planets[result].getPosition().x)+
+                (camera.position.y-this->planets[result].getPosition().y)*(camera.position.y-this->planets[result].getPosition().y)+
+                (camera.position.z-this->planets[result].getPosition().z)*(camera.position.z-this->planets[result].getPosition().z);
+
+                float d2=(camera.position.x-this->planets[i].getPosition().x)*(camera.position.x-this->planets[i].getPosition().x)+
+                (camera.position.y-this->planets[i].getPosition().y)*(camera.position.y-this->planets[i].getPosition().y)+
+                (camera.position.z-this->planets[i].getPosition().z)*(camera.position.z-this->planets[i].getPosition().z);
+
+                if(d2>d1){
+                    result=i;
+                }
+            }
+        }
+    }
+    return result;
+}

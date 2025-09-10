@@ -106,3 +106,21 @@ void Planet::drawPlanet(const double radius_const, const double orbital_const){
     Vector3 v{this->position.x/orbital_const, this->position.y/orbital_const, this->position.z/orbital_const};
     DrawSphere(v, this->radius/radius_const, this->color);
 }
+
+bool Planet::isCursorOnPlanet(const Camera3D& camera, const long double radius_divider, const long double distance_divider) const{
+    Ray ray=GetMouseRay(GetMousePosition(), camera);
+    Vector3 planet_pos=this->getPosition();
+    planet_pos.x/=distance_divider;
+    planet_pos.y/=distance_divider;
+    planet_pos.z/=distance_divider;
+    RayCollision ray_collision=GetRayCollisionSphere(ray, planet_pos, this->getRadius()/radius_divider);
+    return ray_collision.hit;
+}
+
+void Planet::markPlanet(const Camera3D& camera, const long double radius_divider, const long double distance_divider) const{
+    Vector3 planet_pos=this->getPosition();
+    planet_pos.x/=distance_divider;
+    planet_pos.y/=distance_divider;
+    planet_pos.z/=distance_divider;
+    DrawCircle3D(planet_pos, this->getRadius()/radius_divider+0.1l, (Vector3){camera.position.x, camera.position.y, camera.position.z}, 0.f, GREEN);
+}

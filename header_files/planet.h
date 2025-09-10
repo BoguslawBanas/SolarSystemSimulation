@@ -53,6 +53,10 @@ class Planet{
     void movePlanet();
 
     void drawPlanet(const double, const double);
+
+    bool isCursorOnPlanet(const Camera3D&, const long double, const long double) const;
+
+    void markPlanet(const Camera3D&, const long double, const long double) const;
 };
 
 #endif

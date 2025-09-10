@@ -1,9 +1,11 @@
 #include "../header_files/simulation.h"
 #include "../header_files/rcamera.h"
 
+#include <iostream>
+
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
-    this->grid2d=new Gravitational_Grid_2D((Vector2){-1e9, -1e9}, 150, -5.0);
+    this->grid2d=new Gravitational_Grid_2D((Vector2){-7e9, -7e9}, 175, -5.0);
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
 
@@ -105,6 +107,7 @@ void Simulation::drawSimulation(){
     static float mult=1.f;
     static char mult_str[10];
     static bool is_camera_locked=false;
+    static int marked_planet=-1;
 
     if(IsKeyPressed(KEY_L)){
         is_camera_locked=!is_camera_locked;
@@ -131,10 +134,18 @@ void Simulation::drawSimulation(){
             universe->calculateGravitiesOfPlanets(mult);
             grid2d->calculateGrid(universe->getPlanets());
 
+            marked_planet=this->universe->findPlanetPointedAt(camera, DIVIDE_CONST, DISTANCE_CONST);
+
             BeginMode3D(camera);
 
             universe->drawUniverse(DIVIDE_CONST, DISTANCE_CONST);
             grid2d->drawGrid(DISTANCE_CONST);
+            if(marked_planet!=-1){
+                this->universe->getPlanets()[marked_planet].markPlanet(camera, DIVIDE_CONST, DISTANCE_CONST);
+                if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                    std::cout<<this->universe->getPlanets()[marked_planet].getName()<<'\n';
+                }
+            }
 
             EndMode3D();
 

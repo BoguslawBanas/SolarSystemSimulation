@@ -34,6 +34,8 @@ class Universe{
     void acceptPlanetToUniverse();
 
     void deletePlanetsFromUniverse(const std::vector<char>&);
+
+    int findPlanetPointedAt(const Camera3D&, const long double, const long double) const;
 };
 
 #endif
