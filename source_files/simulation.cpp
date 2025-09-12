@@ -6,6 +6,7 @@
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
     this->grid2d=new Gravitational_Grid_2D((Vector2){-7e9, -7e9}, 175, -5.0);
+    this->main_menu=NULL;
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
 
@@ -35,7 +36,9 @@ Simulation::Simulation(int width, int height){
 Simulation::~Simulation(){
     delete this->universe;
     delete this->grid2d;
+    delete this->main_menu;
     delete this->add_planet_menu;
+    delete this->delete_planet_menu;
     CloseWindow();
 }
 
@@ -58,6 +61,7 @@ void Simulation::calcLogic(){
     else if(buttons["Solar_system"]){
         buttons["Solar_system"]=false;
         this->state=SIMULATION;
+        this->main_menu=new Main_Menu(this->window_width, this->window_height);
         universe->addPlanetToUniverse(Planet(0.1l, 0.1l, 0.l, 0.l, 0.l, 0.l, SUN_RADIUS/10, SUN_MASS, YELLOW, "Sun")); //Sun
         universe->addPlanetToUniverse(Planet(MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000.l*1.l, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN, "Mercury")); //Mercury
         universe->addPlanetToUniverse(Planet(VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.73l, VENUS_RADIUS, VENUS_MASS, BROWN, "Venus")); //Venus
@@ -70,8 +74,9 @@ void Simulation::calcLogic(){
         universe->addPlanetToUniverse(Planet(PLUTO_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.099l, PLUTO_RADIUS, PLUTO_MASS, GRAY, "Pluto")); //Pluto
     }
     else if(buttons["Free_mode"]){
-        buttons["Solar_system"]=false;
+        buttons["Free_mode"]=false;
         this->state=SIMULATION;
+        this->main_menu=new Main_Menu(this->window_width, this->window_height);
     }
     else if(buttons["Go_back"]){
         buttons["Go_back"]=false;
@@ -105,17 +110,12 @@ void Simulation::calcLogic(){
 
 void Simulation::drawSimulation(){
     static float mult=1.f;
-    static char mult_str[10];
     static bool is_camera_locked=false;
     static int marked_planet=-1;
 
-    if(IsKeyPressed(KEY_L)){
-        is_camera_locked=!is_camera_locked;
-    }
-
-    if(IsKeyPressed(KEY_P)){
-        mult=0.f;
-    }
+    // if(IsKeyPressed(KEY_P)){
+    //     mult=0.f;
+    // }
     BeginDrawing();
 
     ClearBackground(BLACK);
@@ -131,6 +131,14 @@ void Simulation::drawSimulation(){
             buttons["Go_back"]=GuiButton((Rectangle){3*this->window_width/4, this->window_height/2-20, 80, 40}, "Go back");
         }break;
         case SIMULATION:{
+            if(IsKeyPressed(KEY_L)){
+                this->main_menu->lockUnlockCamera();
+            }
+
+            if(IsKeyPressed(KEY_P)){
+                this->main_menu->changePauseSetting();
+            }
+
             universe->calculateGravitiesOfPlanets(mult);
             grid2d->calculateGrid(universe->getPlanets());
 
@@ -149,23 +157,23 @@ void Simulation::drawSimulation(){
 
             EndMode3D();
 
-            if(!is_camera_locked){
+            if(!this->main_menu->getIsCameraLocked()){
                 UpdateCameraCustom(&camera, CAMERA_FIRST_PERSON);
-            }
-            else{
-                DrawText("CAMERA LOCKED", 900, 30, 15, RED);
             }
 
             buttons["Add_planet"]=GuiButton((Rectangle){24, 24, 120, 30}, "Add planet.");
             buttons["Delete_planet"]=GuiButton((Rectangle){this->window_width-120-24, 24, 120, 30}, "Delete planet.");
 
-            GuiSlider((Rectangle{300, 24, 400, 30}), "0", "100", &mult, 0.f, 100.f);
-            snprintf(mult_str, 10, "%f", mult);
-            DrawText(mult_str, 750, 30, 15, GREEN);
+            mult=this->main_menu->getSpeed();
+            this->main_menu->drawMenu();
 
             buttons["Exit"]=GuiButton((Rectangle){24, this->window_height-40, 120, 30}, "Exit.");
         }break;
         case ADD_PLANET_MENU:{
+            if(IsKeyPressed(KEY_P)){
+                this->main_menu->changePauseSetting();
+            }
+
             universe->calculateGravitiesOfPlanets(mult);
             grid2d->calculateGrid(universe->getPlanets());
 
@@ -188,6 +196,10 @@ void Simulation::drawSimulation(){
             }
         }break;
         case DELETE_PLANET_MENU:{
+            if(IsKeyPressed(KEY_P)){
+                this->main_menu->changePauseSetting();
+            }
+            
             universe->calculateGravitiesOfPlanets(mult);
             grid2d->calculateGrid(universe->getPlanets());
 

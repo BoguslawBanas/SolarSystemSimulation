@@ -18,11 +18,17 @@ class Main_Menu{
 
     ~Main_Menu();
 
+    bool getIsCameraLocked() const;
+
+    bool getIsSimulationPaused() const;
+
+    float getSpeed() const;
+
     void changePauseSetting();
 
     void lockUnlockCamera();
 
-    void drawMenu();
+    void drawMenu() const;
 };
 
 #endif
