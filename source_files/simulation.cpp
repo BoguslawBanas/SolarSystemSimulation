@@ -109,13 +109,7 @@ void Simulation::calcLogic(){
 }
 
 void Simulation::drawSimulation(){
-    static float mult=1.f;
-    static bool is_camera_locked=false;
     static int marked_planet=-1;
-
-    // if(IsKeyPressed(KEY_P)){
-    //     mult=0.f;
-    // }
     BeginDrawing();
 
     ClearBackground(BLACK);
@@ -139,7 +133,7 @@ void Simulation::drawSimulation(){
                 this->main_menu->changePauseSetting();
             }
 
-            universe->calculateGravitiesOfPlanets(mult);
+            universe->calculateGravitiesOfPlanets(this->main_menu->getSpeed());
             grid2d->calculateGrid(universe->getPlanets());
 
             marked_planet=this->universe->findPlanetPointedAt(camera, DIVIDE_CONST, DISTANCE_CONST);
@@ -164,17 +158,12 @@ void Simulation::drawSimulation(){
             buttons["Add_planet"]=GuiButton((Rectangle){24, 24, 120, 30}, "Add planet.");
             buttons["Delete_planet"]=GuiButton((Rectangle){this->window_width-120-24, 24, 120, 30}, "Delete planet.");
 
-            mult=this->main_menu->getSpeed();
             this->main_menu->drawMenu();
 
             buttons["Exit"]=GuiButton((Rectangle){24, this->window_height-40, 120, 30}, "Exit.");
         }break;
         case ADD_PLANET_MENU:{
-            if(IsKeyPressed(KEY_P)){
-                this->main_menu->changePauseSetting();
-            }
-
-            universe->calculateGravitiesOfPlanets(mult);
+            universe->calculateGravitiesOfPlanets(this->main_menu->getSpeed());
             grid2d->calculateGrid(universe->getPlanets());
 
             BeginMode3D(camera);
@@ -196,11 +185,7 @@ void Simulation::drawSimulation(){
             }
         }break;
         case DELETE_PLANET_MENU:{
-            if(IsKeyPressed(KEY_P)){
-                this->main_menu->changePauseSetting();
-            }
-            
-            universe->calculateGravitiesOfPlanets(mult);
+            universe->calculateGravitiesOfPlanets(this->main_menu->getSpeed());
             grid2d->calculateGrid(universe->getPlanets());
 
             BeginMode3D(camera);

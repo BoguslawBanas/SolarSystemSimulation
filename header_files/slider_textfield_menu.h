@@ -22,6 +22,8 @@ class SliderTextfieldMenu{
 
     float getSliderResult() const;
 
+    void setSliderResult(const float);
+
     void drawMenu();
 };
 

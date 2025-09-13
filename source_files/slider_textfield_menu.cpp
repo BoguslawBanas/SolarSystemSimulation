@@ -16,6 +16,10 @@ float SliderTextfieldMenu::getSliderResult() const{
     return this->slider_result;
 }
 
+void SliderTextfieldMenu::setSliderResult(const float new_value){
+    this->slider_result=new_value;
+}
+
 void SliderTextfieldMenu::drawMenu(){
     if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && GetMousePosition().x>this->textfield_bounds.x && GetMousePosition().y>this->textfield_bounds.y && GetMousePosition().x<this->textfield_bounds.x+this->textfield_bounds.width && GetMousePosition().y<this->textfield_bounds.y+this->textfield_bounds.height){
         this->is_textfield_chosen=true;

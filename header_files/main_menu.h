@@ -11,6 +11,7 @@ class Main_Menu{
     unsigned window_height;
     bool is_camera_locked;
     bool is_simulation_paused;
+    float tmp_value;
     SliderTextfieldMenu *speed_of_simulation_menu;
 
     public:
