@@ -7,6 +7,7 @@ Main_Menu::Main_Menu(const unsigned window_width, const unsigned window_height){
     this->is_simulation_paused=false;
     this->tmp_value=0.f;
     this->speed_of_simulation_menu=new SliderTextfieldMenu((Rectangle){300, 24, 400, 30}, (Rectangle){750, 30, 150, 15}, 0.f, 100.f);
+    this->speed_of_simulation_menu->setSliderResult(1.f);
 }
 
 Main_Menu::~Main_Menu(){
@@ -29,6 +30,13 @@ float Main_Menu::getSpeed() const{
 }
 
 void Main_Menu::changePauseSetting(){
+    if(this->speed_of_simulation_menu->getSliderResult()!=0.f){
+        this->is_simulation_paused=false;
+    }
+    else{
+        this->is_simulation_paused=true;
+    }
+    
     this->is_simulation_paused=!this->is_simulation_paused;
     if(this->is_simulation_paused){
         tmp_value=this->speed_of_simulation_menu->getSliderResult();
