@@ -6,5 +6,6 @@ g++ source_files/main.cpp ^
  source_files/universe.cpp ^
  source_files/simulation.cpp ^
  source_files/slider_textfield_menu.cpp ^
+ source_files/clicked_planet_menu.cpp ^
  source_files/main_menu.cpp ^
 -lraylib -lgdi32 -lwinmm

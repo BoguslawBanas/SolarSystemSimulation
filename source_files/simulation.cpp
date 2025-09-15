@@ -1,14 +1,13 @@
 #include "../header_files/simulation.h"
 #include "../header_files/rcamera.h"
 
-#include <iostream>
-
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
     this->grid2d=new Gravitational_Grid_2D((Vector2){-7e9, -7e9}, 175, -5.0);
     this->main_menu=NULL;
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
+    this->clicked_planet_menu=NULL;
 
     this->camera={0};
     this->camera.fovy=45.f;
@@ -142,14 +141,27 @@ void Simulation::drawSimulation(){
 
             universe->drawUniverse(DIVIDE_CONST, DISTANCE_CONST);
             grid2d->drawGrid(DISTANCE_CONST);
+
+            if(this->clicked_planet_menu && this->clicked_planet_menu->shouldMenuBeClosed()){
+                delete this->clicked_planet_menu;
+                this->clicked_planet_menu=NULL;
+            }
+
             if(marked_planet!=-1){
                 this->universe->getPlanets()[marked_planet].markPlanet(camera, DIVIDE_CONST, DISTANCE_CONST);
                 if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
-                    std::cout<<this->universe->getPlanets()[marked_planet].getName()<<'\n';
+                    if(this->clicked_planet_menu){
+                        delete this->clicked_planet_menu;
+                    }
+                    this->clicked_planet_menu=new ClickedPlanetMenu(&this->universe->getPlanets()[marked_planet], this->window_width, this->window_height, 300, 400);
                 }
             }
 
             EndMode3D();
+
+            if(this->clicked_planet_menu){
+                this->clicked_planet_menu->drawMenu();
+            }
 
             if(!this->main_menu->getIsCameraLocked()){
                 UpdateCameraCustom(&camera, CAMERA_FIRST_PERSON);
@@ -160,7 +172,7 @@ void Simulation::drawSimulation(){
 
             this->main_menu->drawMenu();
 
-            buttons["Exit"]=GuiButton((Rectangle){24, this->window_height-40, 120, 30}, "Exit.");
+            buttons["Exit"]=GuiButton((Rectangle){this->window_width-144, this->window_height-40, 120, 30}, "Exit.");
         }break;
         case ADD_PLANET_MENU:{
             universe->calculateGravitiesOfPlanets(this->main_menu->getSpeed());
