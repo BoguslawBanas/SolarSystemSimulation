@@ -9,6 +9,7 @@ class Universe{
     private: //tmp later change to private
     std::vector<Planet>planets;
     Planet *tmp_planet;
+    float mult;
 
     public:
     Universe();
@@ -21,7 +22,7 @@ class Universe{
 
     void addPlanetToUniverse(const Planet&);
 
-    void calculateGravitiesOfPlanets(const double);
+    void calculateGravitiesOfPlanets(const float);
 
     void drawUniverse(const double, const double);
 

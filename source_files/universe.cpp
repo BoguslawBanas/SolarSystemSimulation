@@ -3,6 +3,7 @@
 Universe::Universe(){
     this->planets=std::vector<Planet>();
     this->tmp_planet=NULL;
+    this->mult=0.f;
 }
 
 Universe::~Universe(){
@@ -22,12 +23,13 @@ void Universe::addPlanetToUniverse(const Planet &planet){
     this->planets.push_back(planet);
 }
 
-void Universe::calculateGravitiesOfPlanets(const double mult){
+void Universe::calculateGravitiesOfPlanets(const float t_mult){
+    this->mult+=t_mult;
     if(this->planets.size()<2){
         return;
     }
 
-    for(int m=0;m<mult;++m){
+    for(int m=0;m<(int)(floorf(this->mult));++m){
         for(int i=0;i<this->planets.size();++i){
             for(int j=i+1;j<this->planets.size();++j){
                 this->planets[i].calcVelocityFromGravity(this->planets[j], mult);
@@ -38,6 +40,8 @@ void Universe::calculateGravitiesOfPlanets(const double mult){
             this->planets[i].movePlanet();
         }
     }
+
+    this->mult-=floorf(this->mult);
 }
 
 void Universe::drawUniverse(const double radius_const, const double orbital_const){
