@@ -30,7 +30,7 @@ float Main_Menu::getSpeed() const{
 }
 
 void Main_Menu::changePauseSetting(){
-    if(this->speed_of_simulation_menu->getSliderResult()!=0.f){
+    if(this->speed_of_simulation_menu->getSliderResult()>EPSILON){
         this->is_simulation_paused=false;
     }
     else{

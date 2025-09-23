@@ -6,7 +6,7 @@
 #include <math.h>
 
 class Universe{
-    private: //tmp later change to private
+    private:
     std::vector<Planet>planets;
     Planet *tmp_planet;
     float mult;

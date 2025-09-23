@@ -2,6 +2,7 @@
 #define MAIN_MENU_H
 
 #include <raylib.h>
+#include <raymath.h>
 #include <string>
 #include "../header_files/slider_textfield_menu.h"
 

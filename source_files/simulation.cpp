@@ -93,6 +93,12 @@ void Simulation::calcLogic(){
             this->delete_planet_menu=NULL;
             this->state=SIMULATION;
         }
+        else if(this->state==PAUSE){
+            delete this->pause_menu;
+            this->pause_menu=NULL;
+            this->state=SIMULATION;
+            this->main_menu->changePauseSetting();
+        }
     }
     else if(buttons["Add_planet"]){
         buttons["Add_planet"]=false;
@@ -104,6 +110,14 @@ void Simulation::calcLogic(){
         buttons["Delete_planet"]=false;
         this->state=DELETE_PLANET_MENU;
         this->delete_planet_menu=new Delete_Planet_Menu(universe->getPlanets().size(), this->window_width/4, this->window_height, 3*this->window_width/4);
+    }
+    else if(buttons["Pause"]){
+        buttons["Pause"]=false;
+        this->state=PAUSE;
+        this->pause_menu=new Pause_Menu(this->window_width, this->window_height);
+        if(this->main_menu->getIsSimulationPaused()){
+            this->main_menu->changePauseSetting();
+        }
     }
 }
 
@@ -172,7 +186,7 @@ void Simulation::drawSimulation(){
 
             this->main_menu->drawMenu();
 
-            buttons["Exit"]=GuiButton((Rectangle){this->window_width-144, this->window_height-40, 120, 30}, "Exit.");
+            buttons["Pause"]=GuiButton((Rectangle){this->window_width-144, this->window_height-40, 120, 30}, "Pause.");
         }break;
         case ADD_PLANET_MENU:{
             universe->calculateGravitiesOfPlanets(this->main_menu->getSpeed());
@@ -218,7 +232,13 @@ void Simulation::drawSimulation(){
             }
         }break;
         case PAUSE:{
-
+            if(this->pause_menu->getGoBackButton()){
+                this->buttons["Go_back"]=true;
+            }
+            else if(this->pause_menu->getExitButton()){
+                this->buttons["Exit"]=true;
+            }
+            this->pause_menu->drawMenu();
         }break;
         default: break;
     }

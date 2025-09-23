@@ -11,6 +11,7 @@
 #include "add_planet_menu.h"
 #include "delete_planet_menu.h"
 #include "clicked_planet_menu.h"
+#include "pause_menu.h"
 #include "universe.h"
 #include "gravitational_grid_2d.h"
 
@@ -32,6 +33,7 @@ class Simulation{
     Add_Planet_Menu *add_planet_menu;
     Delete_Planet_Menu *delete_planet_menu;
     ClickedPlanetMenu *clicked_planet_menu;
+    Pause_Menu *pause_menu;
     Camera3D camera;
     Simulation_State state;
     int window_width;
