@@ -11,6 +11,8 @@ class Pause_Menu{
     bool read_simulation_button;
     bool go_back_button;
     bool exit_buttton;
+    bool is_file_save_succeeded;
+    bool is_file_save_failed;
 
     public:
     Pause_Menu(const unsigned, const unsigned);
@@ -24,6 +26,10 @@ class Pause_Menu{
     bool getSaveSimulationButton() const;
 
     bool getReadSimulationButton() const;
+
+    void setIsFileSaveSucceeded(const bool new_value);
+
+    void setIsFileSaveFailed(const bool new_value);
 
     void drawMenu();
 };

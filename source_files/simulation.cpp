@@ -8,6 +8,7 @@ Simulation::Simulation(int width, int height){
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
     this->clicked_planet_menu=NULL;
+    // this->file_saver=NULL;
 
     this->camera={0};
     this->camera.fovy=45.f;
@@ -27,6 +28,8 @@ Simulation::Simulation(int width, int height){
     buttons.insert({"Add_planet", false});
     buttons.insert({"Delete_planet", false});
     buttons.insert({"Pause", false});
+    buttons.insert({"Save_file", false});
+    buttons.insert({"Read_file", false});
 
     InitWindow(width, height, "Solar System");
     SetTargetFPS(60);
@@ -118,6 +121,19 @@ void Simulation::calcLogic(){
         if(this->main_menu->getIsSimulationPaused()){
             this->main_menu->changePauseSetting();
         }
+    }
+    else if(buttons["Save_file"]){
+        buttons["Save_file"]=false;
+        file_saver=new file_saver::File_Saver();
+        if(file_saver->saveFile(this->universe)){
+            // printf("%s\n", file_saver->getFilePath());
+            this->pause_menu->setIsFileSaveSucceeded(true);
+        }
+        else{
+            this->pause_menu->setIsFileSaveFailed(true);
+        }
+        delete file_saver;
+        file_saver=NULL;
     }
 }
 
@@ -237,6 +253,9 @@ void Simulation::drawSimulation(){
             }
             else if(this->pause_menu->getExitButton()){
                 this->buttons["Exit"]=true;
+            }
+            else if(this->pause_menu->getSaveSimulationButton()){
+                this->buttons["Save_file"]=true;
             }
             this->pause_menu->drawMenu();
         }break;

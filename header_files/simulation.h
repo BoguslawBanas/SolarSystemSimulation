@@ -14,6 +14,7 @@
 #include "pause_menu.h"
 #include "universe.h"
 #include "gravitational_grid_2d.h"
+#include "file_saver.h"
 
 enum Simulation_State{
     START_MENU,
@@ -34,6 +35,7 @@ class Simulation{
     Delete_Planet_Menu *delete_planet_menu;
     ClickedPlanetMenu *clicked_planet_menu;
     Pause_Menu *pause_menu;
+    file_saver::File_Saver *file_saver;
     Camera3D camera;
     Simulation_State state;
     int window_width;
