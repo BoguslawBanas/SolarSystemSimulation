@@ -1,5 +1,14 @@
 #include "../header_files/planet.h"
 
+Planet::Planet(){
+    this->position=(Vector3){0.f, 0.f, 0.f};
+    this->velocity=(Vector3){0.f, 0.f, 0.f};
+    this->radius=0.l;
+    this->mass=0.l;
+    this->color=WHITE;
+    this->name="";
+}
+
 Planet::Planet(long double x, long double y, long double z, float velX, float velY, float velZ, long double radius, long double mass, Color color, const char *name){
     this->position=(Vector3){x, y, z};
     this->velocity=(Vector3){velX, velY, velZ};

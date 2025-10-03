@@ -15,6 +15,7 @@
 #include "universe.h"
 #include "gravitational_grid_2d.h"
 #include "file_saver.h"
+#include "file_reader.h"
 
 enum Simulation_State{
     START_MENU,
@@ -36,6 +37,7 @@ class Simulation{
     ClickedPlanetMenu *clicked_planet_menu;
     Pause_Menu *pause_menu;
     file_saver::File_Saver *file_saver;
+    file_reader::File_Reader *file_reader;
     Camera3D camera;
     Simulation_State state;
     int window_width;

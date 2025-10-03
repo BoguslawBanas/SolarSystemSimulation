@@ -9,5 +9,6 @@ g++ source_files/main.cpp ^
  source_files/clicked_planet_menu.cpp ^
  source_files/pause_menu.cpp ^
  source_files/file_saver.cpp ^
+ source_files/file_reader.cpp ^
  source_files/main_menu.cpp ^
 -lraylib -lgdi32 -lwinmm -lcomdlg32

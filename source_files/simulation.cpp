@@ -135,6 +135,18 @@ void Simulation::calcLogic(){
         delete file_saver;
         file_saver=NULL;
     }
+    else if(buttons["Read_file"]){
+        buttons["Read_file"]=false;
+        file_reader=new file_reader::File_Reader();
+        if(file_reader->readFile(this->universe)){
+            printf("ACCEPT.\n");
+        }
+        else{
+            printf("DECLINE.\n");
+        }
+        delete file_reader;
+        file_reader=NULL;
+    }
 }
 
 void Simulation::drawSimulation(){
@@ -256,6 +268,9 @@ void Simulation::drawSimulation(){
             }
             else if(this->pause_menu->getSaveSimulationButton()){
                 this->buttons["Save_file"]=true;
+            }
+            else if(this->pause_menu->getReadSimulationButton()){
+                this->buttons["Read_file"]=true;
             }
             this->pause_menu->drawMenu();
         }break;

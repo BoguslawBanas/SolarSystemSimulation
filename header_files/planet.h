@@ -16,6 +16,8 @@ class Planet{
     const char *name;
 
     public:
+    Planet();
+
     Planet(long double, long double, long double, float, float, float, long double, long double, Color, const char*);
 
     ~Planet();
