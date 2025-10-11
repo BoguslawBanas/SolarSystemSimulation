@@ -6,7 +6,7 @@ Planet::Planet(){
     this->radius=0.l;
     this->mass=0.l;
     this->color=WHITE;
-    this->name="";
+    this->name[0]='\0';
 }
 
 Planet::Planet(long double x, long double y, long double z, float velX, float velY, float velZ, long double radius, long double mass, Color color, const char *name){
@@ -15,7 +15,7 @@ Planet::Planet(long double x, long double y, long double z, float velX, float ve
     this->radius=radius;
     this->mass=mass;
     this->color=color;
-    this->name=name;
+    strncpy(this->name, name, 259);
 }
 
 Planet::~Planet()=default;
@@ -75,7 +75,7 @@ const char* Planet::getName() const{
 }
 
 void Planet::setName(const char* new_name){
-    this->name=new_name;
+    strncpy(this->name, new_name, 259);
 }
 
 long double Planet::calcDistance(const Planet &planet) const{

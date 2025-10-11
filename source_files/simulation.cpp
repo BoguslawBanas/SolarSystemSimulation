@@ -124,9 +124,10 @@ void Simulation::calcLogic(){
     }
     else if(buttons["Save_file"]){
         buttons["Save_file"]=false;
+        this->pause_menu->clearFlags();
+
         file_saver=new file_saver::File_Saver();
         if(file_saver->saveFile(this->universe)){
-            // printf("%s\n", file_saver->getFilePath());
             this->pause_menu->setIsFileSaveSucceeded(true);
         }
         else{
@@ -136,13 +137,20 @@ void Simulation::calcLogic(){
         file_saver=NULL;
     }
     else if(buttons["Read_file"]){
+        static Universe *new_universe; 
         buttons["Read_file"]=false;
+        this->pause_menu->clearFlags();
+
         file_reader=new file_reader::File_Reader();
-        if(file_reader->readFile(this->universe)){
-            printf("ACCEPT.\n");
+        new_universe=file_reader->readFile(this->universe);
+
+        if(new_universe){
+            delete this->universe;
+            this->universe=new_universe;
+            this->pause_menu->setIsFileReadSucceeded(true);
         }
         else{
-            printf("DECLINE.\n");
+            this->pause_menu->setIsFileReadFailed(true);
         }
         delete file_reader;
         file_reader=NULL;

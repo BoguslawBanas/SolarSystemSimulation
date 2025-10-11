@@ -5,6 +5,7 @@
 #include <math.h>
 #include "solar_system_consts.h"
 #include <string>
+#include <string.h>
 
 class Planet{
     private:
@@ -13,7 +14,7 @@ class Planet{
     long double radius;
     long double mass;
     Color color;
-    const char *name;
+    char name[260];
 
     public:
     Planet();

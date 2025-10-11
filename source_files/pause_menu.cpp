@@ -10,6 +10,8 @@ Pause_Menu::Pause_Menu(const unsigned window_width, const unsigned window_height
     this->read_simulation_button=false;
     this->is_file_save_succeeded=false;
     this->is_file_save_failed=false;
+    this->is_file_read_succeeded=false;
+    this->is_file_read_failed=false;
 }
 
 Pause_Menu::~Pause_Menu()=default;
@@ -30,12 +32,27 @@ bool Pause_Menu::getReadSimulationButton() const{
     return this->read_simulation_button;
 }
 
+void Pause_Menu::clearFlags(){
+    this->is_file_save_succeeded=false;
+    this->is_file_save_failed=false;
+    this->is_file_read_succeeded=false;
+    this->is_file_read_failed=false;
+}
+
 void Pause_Menu::setIsFileSaveSucceeded(const bool new_value){
     this->is_file_save_succeeded=new_value;
 }
 
 void Pause_Menu::setIsFileSaveFailed(const bool new_value){
     this->is_file_save_failed=new_value;
+}
+
+void Pause_Menu::setIsFileReadSucceeded(const bool new_value){
+    this->is_file_read_succeeded=new_value;
+}
+
+void Pause_Menu::setIsFileReadFailed(const bool new_value){
+    this->is_file_read_failed=new_value;
 }
 
 void Pause_Menu::drawMenu(){
@@ -48,5 +65,11 @@ void Pause_Menu::drawMenu(){
     }
     if(this->is_file_save_failed){
         DrawText("File save failed.", this->window_width/2-100, 3*this->window_height/4-15, 30, RED);
+    }
+    if(this->is_file_read_succeeded){
+        DrawText("File read succeeded.", this->window_width/2-100, 3*this->window_height/4-15, 30, GREEN);
+    }
+    if(this->is_file_read_failed){
+        DrawText("File read failed.", this->window_width/2-100, 3*this->window_height/4-15, 30, RED);
     }
 }

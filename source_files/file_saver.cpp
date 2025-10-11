@@ -7,7 +7,7 @@ void file_saver::File_Saver::save_color(FILE *f, const Color &color){
     // fprintf(f, "\t\t\t\t\"g\": %u,\n", color.g);
     // fprintf(f, "\t\t\t\t\"r\": %u\n", color.r);
     // fprintf(f, "\t\t\t},\n");
-    fprintf(f, "Color: %u %u %u %u\n", color.a, color.b, color.g, color.r);
+    fprintf(f, "Color: %d %d %d %d\n", color.a, color.b, color.g, color.r);
 }
 
 void file_saver::File_Saver::save_mass(FILE *f, const long double mass){
@@ -68,14 +68,16 @@ bool file_saver::File_Saver::saveFile(Universe* const universe){
         FILE *f=fopen(file.lpstrFile, "wb");
         if(f){
             fprintf(f, "Solar_system_simulation_file_save.\n");
+            fprintf(f, "%d\n", universe->getPlanets().size());
             for(auto &it : universe->getPlanets()){
-                fprintf(f, "\n----\n");
+                fprintf(f, "\n");
                 this->save_color(f, it.getColor());
                 this->save_mass(f, it.getMass());
                 this->save_name(f, it.getName());
                 this->save_position(f, it.getPosition());
                 this->save_radius(f, it.getRadius());
                 this->save_velocity(f, it.getVelocity());
+                fprintf(f, "----\n");
             }
             result=true;
         }
