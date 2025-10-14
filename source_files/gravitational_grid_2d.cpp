@@ -1,13 +1,15 @@
 #include "../header_files/gravitational_grid_2d.h"
 
-Gravitational_Grid_2D::Gravitational_Grid_2D(const Vector2 &start_pos, const int amount_of_nodes, const double default_height_of_grid){
+Gravitational_Grid_2D::Gravitational_Grid_2D(const float start_pos, const int amount_of_nodes, const float default_height_of_grid){
     this->start_pos=start_pos;
     this->amount_of_nodes=amount_of_nodes;
     this->default_height_of_grid=default_height_of_grid;
+    this->grid_delta=2*fabs(start_pos)/(amount_of_nodes-1);
     this->grid=new Vector3[amount_of_nodes*amount_of_nodes];
+    
     for(int i=0;i<amount_of_nodes;++i){
         for(int j=0;j<amount_of_nodes;++j){
-            grid[i*amount_of_nodes+j]=(Vector3){start_pos.x+(i*fabs(start_pos.x/(amount_of_nodes/2))), default_height_of_grid, start_pos.y+(j*fabs(start_pos.y/(amount_of_nodes/2)))};
+            grid[i*amount_of_nodes+j]=(Vector3){start_pos+i*grid_delta, default_height_of_grid, start_pos+j*grid_delta};
         }
     }
 }

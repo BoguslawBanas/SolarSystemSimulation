@@ -9,13 +9,14 @@
 
 class Gravitational_Grid_2D{
     private:
-    Vector2 start_pos;
+    float start_pos;
     int amount_of_nodes;
     double default_height_of_grid;
+    float grid_delta;
     Vector3 *grid;
     
     public:
-    Gravitational_Grid_2D(const Vector2&, const int, const double);
+    Gravitational_Grid_2D(const float, const int, const float);
 
     ~Gravitational_Grid_2D();
 
