@@ -13,10 +13,11 @@ class Gravitational_Grid_2D{
     int amount_of_nodes;
     double default_height_of_grid;
     float grid_delta;
-    Vector3 *grid;
+    float distance_const_divider;
+    float **grid;
     
     public:
-    Gravitational_Grid_2D(const float, const int, const float);
+    Gravitational_Grid_2D(const float, const int, const float, const float);
 
     ~Gravitational_Grid_2D();
 

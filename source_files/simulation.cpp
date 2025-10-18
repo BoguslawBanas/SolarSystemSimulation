@@ -3,13 +3,13 @@
 
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
-    this->grid2d=new Gravitational_Grid_2D(-2e9f, 250, -5.0f);
+    this->grid2d=new Gravitational_Grid_2D(-2e9f, 285, -5.0f, DISTANCE_CONST);
     this->main_menu=NULL;
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
     this->clicked_planet_menu=NULL;
-    // this->file_saver=NULL;
-    // this->file_reader=NULL;
+    this->file_saver=NULL;
+    this->file_reader=NULL;
 
     this->camera={0};
     this->camera.fovy=45.f;

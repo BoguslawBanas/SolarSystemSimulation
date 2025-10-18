@@ -1,8 +1,8 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#define DISTANCE_CONST 5e6l
-#define DIVIDE_CONST 1e4l
+#define DISTANCE_CONST 5e6f
+#define DIVIDE_CONST 1e4f
 
 #include <raylib.h>
 #include <raymath.h>
