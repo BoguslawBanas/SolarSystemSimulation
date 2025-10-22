@@ -3,7 +3,7 @@
 
 Simulation::Simulation(int width, int height){
     this->universe=new Universe();
-    this->grid2d=new Gravitational_Grid_2D(-2e9f, 285, -5.0f, DISTANCE_CONST);
+    this->grid2d=new Gravitational_Grid_2D(-5e8f, 285, -5.0f, DISTANCE_CONST);
     this->main_menu=NULL;
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;

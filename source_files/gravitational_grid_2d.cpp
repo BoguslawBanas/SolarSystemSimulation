@@ -52,7 +52,6 @@ void Gravitational_Grid_2D::calculateGrid(const std::vector<Planet>& planets){
                     }
                 }
             }
-
         }
     }
 }
