@@ -34,7 +34,7 @@ void Delete_Planet_Menu::drawMenu(const std::vector<Planet>& planets){
 
     GuiScrollPanel((Rectangle){this->start_menu_width+20, 80, this->menu_width-40, 300}, NULL, (Rectangle){this->start_menu_width+20, 80, this->menu_width-40, 800}, &v2, NULL);
 
-    DrawText(s, 30, 30, 15, BLUE);
+    // DrawText(s, 30, 30, 15, BLUE);
 
     int i=-v2.y/(517/(planets.size()-6+1));
     int j=i+6;
