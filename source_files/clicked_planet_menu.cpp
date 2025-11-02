@@ -8,7 +8,9 @@ ClickedPlanetMenu::ClickedPlanetMenu(Planet* const planet, const unsigned window
     this->menu_width=menu_width;
     this->menu_height=menu_height;
     this->mass_str[0]='\0';
-    this->speed_str[0]='\0';
+    this->velocity_x_str[0]='\0';
+    this->velocity_y_str[0]='\0';
+    this->velocity_z_str[0]='\0';
     this->radius_str[0]='\0';
 }
 
@@ -16,7 +18,7 @@ ClickedPlanetMenu::~ClickedPlanetMenu(){
     this->planet=NULL;
 }
 
-void ClickedPlanetMenu::changePlanet(Planet * const new_planet){
+void ClickedPlanetMenu::changePlanet(Planet* const new_planet){
     this->planet=new_planet;
 }
 
@@ -25,9 +27,10 @@ bool ClickedPlanetMenu::shouldMenuBeClosed(){
 }
 
 void ClickedPlanetMenu::drawMenu(){
-    float speed=fabs(this->planet->getVelocity().x)+fabs(this->planet->getVelocity().y)+fabs(this->planet->getVelocity().z);
     snprintf(this->mass_str, 25, "%1.4Le", this->planet->getMass());
-    snprintf(this->speed_str, 25, "%1.4e", speed);
+    snprintf(this->velocity_x_str, 25, "%1.4e", this->planet->getVelocity().x);
+    snprintf(this->velocity_y_str, 25, "%1.4e", this->planet->getVelocity().y);
+    snprintf(this->velocity_z_str, 25, "%1.4e", this->planet->getVelocity().z);
     snprintf(this->radius_str, 25, "%1.4Le", this->planet->getRadius());
 
     DrawRectangle(0, this->window_height-this->menu_height, this->menu_width, this->menu_height, WHITE);
@@ -41,8 +44,14 @@ void ClickedPlanetMenu::drawMenu(){
     DrawText("Planet's mass: ", this->menu_width/10, this->window_height-this->menu_height+150, 15, GRAY);
     DrawText(this->mass_str, this->menu_width/10+110, this->window_height-this->menu_height+150, 15, GRAY);
 
-    DrawText("Planet's velocity: ", this->menu_width/10, this->window_height-this->menu_height+200, 15, GRAY);
-    DrawText(this->speed_str, this->menu_width/10+130, this->window_height-this->menu_height+200, 15, GRAY);
+    DrawText("Planet's velocity.x: ", this->menu_width/10, this->window_height-this->menu_height+200, 15, GRAY);
+    DrawText(this->velocity_x_str, this->menu_width/10+140, this->window_height-this->menu_height+200, 15, GRAY);
+
+    DrawText("Planet's velocity.y: ", this->menu_width/10, this->window_height-this->menu_height+250, 15, GRAY);
+    DrawText(this->velocity_y_str, this->menu_width/10+140, this->window_height-this->menu_height+250, 15, GRAY);
+
+    DrawText("Planet's velocity.z: ", this->menu_width/10, this->window_height-this->menu_height+300, 15, GRAY);
+    DrawText(this->velocity_z_str, this->menu_width/10+140, this->window_height-this->menu_height+300, 15, GRAY);
 
     // DrawText("Planet's distance: ", this->menu_width/10, this->window_height-this->menu_height+250, 15, GRAY);
     // DrawText(this->planet->getName(), this->menu_width/5, this->window_height-this->menu_height+250, 15, GRAY);

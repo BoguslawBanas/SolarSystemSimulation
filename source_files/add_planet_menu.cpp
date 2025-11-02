@@ -1,6 +1,8 @@
 #include "../header_files/add_planet_menu.h"
 
 Add_Planet_Menu::Add_Planet_Menu(unsigned menu_width, unsigned menu_height, unsigned start_menu_width){
+    this->accept_new_planet_button=false;
+    this->go_back_button=false;
     this->menu_width=menu_width;
     this->menu_height=menu_height;
     this->start_menu_width=start_menu_width;
@@ -20,6 +22,14 @@ Add_Planet_Menu::~Add_Planet_Menu(){
     delete this->angle_menu;
     delete this->distance_from_center_menu;
     delete this->velocity_menu;
+}
+
+bool Add_Planet_Menu::getGoBackButton() const{
+    return this->go_back_button;
+}
+
+bool Add_Planet_Menu::getAcceptNewPlanetButton() const{
+    return this->accept_new_planet_button;
 }
 
 const char* Add_Planet_Menu::getName() const{
@@ -69,4 +79,7 @@ void Add_Planet_Menu::drawMenu(){
     this->velocity_menu->drawMenu();
 
     GuiColorPicker((Rectangle){this->start_menu_width+20, 700, 180, 80}, "Choose color", &this->color);
+
+    this->go_back_button=GuiButton((Rectangle){this->start_menu_width+20, this->menu_height-50, 100, 30}, "Go back.");
+    this->accept_new_planet_button=GuiButton((Rectangle){this->start_menu_width+this->menu_width-120, this->menu_height-50, 100, 30}, "Accept planet.");
 }

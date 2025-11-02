@@ -10,16 +10,28 @@
 class Gravitational_Grid_2D{
     private:
     float start_pos;
-    int amount_of_nodes;
-    double default_height_of_grid;
+    unsigned amount_of_nodes;
+    float default_height_of_grid;
+    float distance_divider;
     float grid_delta;
-    float distance_const_divider;
     float **grid;
+
+    float calcGridDelta();
     
     public:
+    Gravitational_Grid_2D();
+
     Gravitational_Grid_2D(const float, const int, const float, const float);
 
     ~Gravitational_Grid_2D();
+
+    void setStartPos(const float);
+
+    void setAmountOfNodes(const unsigned);
+
+    void setDefaultHeightOfGrid(const float);
+
+    void setDistanceDivider(const float);
 
     void calculateGrid(const std::vector<Planet>&);
 

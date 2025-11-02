@@ -20,11 +20,17 @@ class Add_Planet_Menu{
     SliderTextfieldMenu *angle_menu;
     SliderTextfieldMenu *distance_from_center_menu;
     SliderTextfieldMenu *velocity_menu;
+    bool go_back_button;
+    bool accept_new_planet_button;
 
     public:
     Add_Planet_Menu(unsigned, unsigned, unsigned);
 
     ~Add_Planet_Menu();
+
+    bool getGoBackButton() const;
+
+    bool getAcceptNewPlanetButton() const;
 
     const char* getName() const;
 

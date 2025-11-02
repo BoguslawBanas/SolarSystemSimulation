@@ -9,7 +9,9 @@ class ClickedPlanetMenu{
     unsigned menu_width;
     unsigned menu_height;
     int is_closed;
-    char speed_str[25];
+    char velocity_x_str[25];
+    char velocity_y_str[25];
+    char velocity_z_str[25];
     char radius_str[25];
     char mass_str[25];
     Planet *planet;

@@ -1,11 +1,31 @@
 #include "../header_files/gravitational_grid_2d.h"
 
+float Gravitational_Grid_2D::calcGridDelta(){
+    return 2*fabs(this->start_pos)/(this->amount_of_nodes-1);
+}
+
+Gravitational_Grid_2D::Gravitational_Grid_2D(){
+    this->start_pos=-1e10;
+    this->amount_of_nodes=151;
+    this->default_height_of_grid=-5.f;
+    this->grid_delta=this->calcGridDelta();
+    this->distance_divider=5e6;
+
+    this->grid=new float*[amount_of_nodes];
+    for(int i=0;i<amount_of_nodes;++i){
+        this->grid[i]=new float[amount_of_nodes];
+        for(int j=0;j<amount_of_nodes;++j){
+            this->grid[i][j]=default_height_of_grid;
+        }
+    }
+}
+
 Gravitational_Grid_2D::Gravitational_Grid_2D(const float start_pos, const int amount_of_nodes, const float default_height_of_grid, const float distance_divider){
     this->start_pos=start_pos;
     this->amount_of_nodes=amount_of_nodes|1; //grid needs to have odd number of nodes
     this->default_height_of_grid=default_height_of_grid;
-    this->grid_delta=2*fabs(start_pos)/(amount_of_nodes-1);
-    this->distance_const_divider=distance_divider;
+    this->grid_delta=this->calcGridDelta();
+    this->distance_divider=distance_divider;
 
     this->grid=new float*[amount_of_nodes];
     for(int i=0;i<amount_of_nodes;++i){
@@ -21,6 +41,37 @@ Gravitational_Grid_2D::~Gravitational_Grid_2D(){
         delete[] this->grid[i];
     }
     delete[] this->grid;
+}
+
+void Gravitational_Grid_2D::setStartPos(const float start_position){
+    this->start_pos=start_position;
+    this->grid_delta=this->calcGridDelta();
+}
+
+void Gravitational_Grid_2D::setAmountOfNodes(const unsigned amount_of_nodes){
+    for(int i=0;i<this->amount_of_nodes;++i){
+        delete[] this->grid[i];
+    }
+    delete[] this->grid;
+
+    this->amount_of_nodes=amount_of_nodes|1;
+    this->grid_delta=this->calcGridDelta();
+
+    this->grid=new float*[this->amount_of_nodes];
+    for(int i=0;i<this->amount_of_nodes;++i){
+        this->grid[i]=new float[this->amount_of_nodes];
+        for(int j=0;j<this->amount_of_nodes;++j){
+            this->grid[i][j]=this->default_height_of_grid;
+        }
+    }
+}
+
+void Gravitational_Grid_2D::setDefaultHeightOfGrid(const float default_height){
+    this->default_height_of_grid=default_height;
+}
+
+void Gravitational_Grid_2D::setDistanceDivider(const float distance_divider){
+    this->distance_divider=distance_divider;
 }
 
 void Gravitational_Grid_2D::calculateGrid(const std::vector<Planet>& planets){
@@ -59,8 +110,8 @@ void Gravitational_Grid_2D::calculateGrid(const std::vector<Planet>& planets){
 void Gravitational_Grid_2D::drawGrid(const double distance_const){
     for(int i=0;i<this->amount_of_nodes-1;++i){
         for(int j=0;j<this->amount_of_nodes-1;++j){
-            DrawLine3D((Vector3){(this->start_pos+i*this->grid_delta)/this->distance_const_divider, this->grid[i][j], (this->start_pos+j*this->grid_delta)/this->distance_const_divider}, (Vector3){(this->start_pos+(i+1)*this->grid_delta)/this->distance_const_divider, this->grid[i+1][j], (this->start_pos+j*this->grid_delta)/this->distance_const_divider}, GRAY);
-            DrawLine3D((Vector3){(this->start_pos+i*this->grid_delta)/this->distance_const_divider, this->grid[i][j], (this->start_pos+j*this->grid_delta)/this->distance_const_divider}, (Vector3){(this->start_pos+i*this->grid_delta)/this->distance_const_divider, this->grid[i][j+1], (this->start_pos+(j+1)*this->grid_delta)/this->distance_const_divider}, GRAY);
+            DrawLine3D((Vector3){(this->start_pos+i*this->grid_delta)/this->distance_divider, this->grid[i][j], (this->start_pos+j*this->grid_delta)/this->distance_divider}, (Vector3){(this->start_pos+(i+1)*this->grid_delta)/this->distance_divider, this->grid[i+1][j], (this->start_pos+j*this->grid_delta)/this->distance_divider}, GRAY);
+            DrawLine3D((Vector3){(this->start_pos+i*this->grid_delta)/this->distance_divider, this->grid[i][j], (this->start_pos+j*this->grid_delta)/this->distance_divider}, (Vector3){(this->start_pos+i*this->grid_delta)/this->distance_divider, this->grid[i][j+1], (this->start_pos+(j+1)*this->grid_delta)/this->distance_divider}, GRAY);
         }
     }
 
