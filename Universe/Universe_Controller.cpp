@@ -1,0 +1,54 @@
+#include "Universe_Controller.h"
+
+Universe_Controller::Universe_Controller(const double distance_div, const double radius_div){
+    this->model=new Universe_Model();
+    this->view=new Universe_View(distance_div, radius_div);
+}
+
+Universe_Controller::~Universe_Controller(){
+    delete this->model;
+    delete this->view;
+}
+
+const Universe_Model* const Universe_Controller::getModel() const{
+    return this->model;
+}
+
+void Universe_Controller::addPlanet(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name){
+    Planet_Model *planet_m=new Planet_Model(position, velocity, radius, mass, color, name);
+    Planet_View *planet_v=new Planet_View();
+
+    this->model->addPlanet(planet_m);
+}
+
+void Universe_Controller::removePlanet(){
+    //fill later
+}
+
+void Universe_Controller::removeAllPlanets(){
+    this->model->removeAllPlanets();
+}
+
+void Universe_Controller::addTmpPlanet(){
+    this->model->createTmpPlanet();
+}
+
+void Universe_Controller::addTmpPlanetToUniverse(){
+    this->model->addPlanet(*this->model->getTmpPlanet());
+}
+
+void Universe_Controller::deleteTmpPlanet(){
+    this->model->deleteTmpPlanet();
+}
+
+void Universe_Controller::updateNewPositionsOfPlanets(const float mult){
+    this->model->calcNewPositionsOfPlanets(mult);
+}
+
+void Universe_Controller::updateTmpPlanet(const double mass, const double radius, const Vector3& distance_from_center, const Vector3& velocity, const Color &color){
+    this->model->updateTmpPlanet(mass, radius, distance_from_center, velocity, color);
+}
+
+void Universe_Controller::requestDrawing(){
+    this->view->drawUniverse(this->model->getPlanets(), this->model->getTmpPlanet());
+}
