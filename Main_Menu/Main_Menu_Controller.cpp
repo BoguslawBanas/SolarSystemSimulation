@@ -51,10 +51,10 @@ bool Main_Menu_Controller::getIsAddNewPlanetButtonClicked() const{
 }
 
 void Main_Menu_Controller::calcLogic(){
-    if(IsKeyPressed(KEY_L)){
+    if(IsKeyDown(KEY_RIGHT_CONTROL) && IsKeyPressed(KEY_L)){
         this->lockUnlockCamera();
     }
-    if(IsKeyPressed(KEY_P)){
+    if(IsKeyDown(KEY_RIGHT_CONTROL) && IsKeyPressed(KEY_P)){
         this->pauseUnpauseSimulation();
     }
     this->slider->calcLogic();

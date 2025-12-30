@@ -4,11 +4,11 @@ Add_Planet_Menu_Controller::Add_Planet_Menu_Controller(const unsigned window_wid
     this->view=new Add_Planet_Menu_View(window_width, window_height);
     this->model=new Add_Planet_Menu_Model();
     float w=3.f*window_width/4.f+30;
-    this->mass_menu=new Slider_Textfield_Menu_Controller(0.f, SUN_MASS*10.f, Rectangle{w, 100, 180, 30}, Rectangle{w+220, 100, 100, 30});
+    this->mass_menu=new Slider_Textfield_Menu_Controller(0.f, SUN_MASS, Rectangle{w, 100, 180, 30}, Rectangle{w+220, 100, 100, 30});
     this->radius_menu=new Slider_Textfield_Menu_Controller(0.f, SUN_RADIUS*2.f, Rectangle{w, 170, 180, 30}, Rectangle{w+220, 170, 100, 30});
-    this->distance_from_center_x_menu=new Slider_Textfield_Menu_Controller(0.f, PLUTO_DISTANCE_FROM_SUN, Rectangle{w, 250, 180, 30}, Rectangle{w+220, 250, 100, 30});
-    this->distance_from_center_y_menu=new Slider_Textfield_Menu_Controller(0.f, PLUTO_DISTANCE_FROM_SUN, Rectangle{w, 300, 180, 30}, Rectangle{w+220, 300, 100, 30});
-    this->distance_from_center_z_menu=new Slider_Textfield_Menu_Controller(0.f, PLUTO_DISTANCE_FROM_SUN, Rectangle{w, 350, 180, 30}, Rectangle{w+220, 350, 100, 30});
+    this->distance_from_center_x_menu=new Slider_Textfield_Menu_Controller(-PLUTO_DISTANCE_FROM_SUN, PLUTO_DISTANCE_FROM_SUN, Rectangle{w, 250, 180, 30}, Rectangle{w+220, 250, 100, 30});
+    this->distance_from_center_y_menu=new Slider_Textfield_Menu_Controller(-PLUTO_DISTANCE_FROM_SUN, PLUTO_DISTANCE_FROM_SUN, Rectangle{w, 300, 180, 30}, Rectangle{w+220, 300, 100, 30});
+    this->distance_from_center_z_menu=new Slider_Textfield_Menu_Controller(-PLUTO_DISTANCE_FROM_SUN, PLUTO_DISTANCE_FROM_SUN, Rectangle{w, 350, 180, 30}, Rectangle{w+220, 350, 100, 30});
     this->velocity_x_menu=new Slider_Textfield_Menu_Controller(0.f, 1e6f, Rectangle{w, 420, 180, 30}, Rectangle{w+220, 420, 100, 30});
     this->velocity_y_menu=new Slider_Textfield_Menu_Controller(0.f, 1e6f, Rectangle{w, 470, 180, 30}, Rectangle{w+220, 470, 100, 30});
     this->velocity_z_menu=new Slider_Textfield_Menu_Controller(0.f, 1e6f, Rectangle{w, 520, 180, 30}, Rectangle{w+220, 520, 100, 30});

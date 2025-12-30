@@ -22,10 +22,10 @@ void Start_Menu_Controller::calcLogic(){
                 this->state=START_MENU2;
             }
             else if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && isPointInsideRectangle(GetMousePosition(), this->model->getButton2())){
-
+                this->state=START_MENU_SETTINGS;
             }
             else if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && isPointInsideRectangle(GetMousePosition(), this->model->getButton3())){
-
+                this->state=START_MENU_EXIT;
             }
         } break;
         case START_MENU2:{
@@ -33,10 +33,10 @@ void Start_Menu_Controller::calcLogic(){
                 this->state=TRANSITION_TO_SIMULATION;
             }
             else if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && isPointInsideRectangle(GetMousePosition(), this->model->getButton2())){
-
+                this->state=TRANSITION_TO_SIMULATION_FREE_MODE;
             }
             else if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && isPointInsideRectangle(GetMousePosition(), this->model->getButton3())){
-
+                this->state=START_MENU1;
             }
         } break;
     }
