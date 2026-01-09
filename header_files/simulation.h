@@ -1,7 +1,7 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
 
-#define DISTANCE_CONST 5e6f
+#define DISTANCE_CONST 3e6f
 #define DIVIDE_CONST 1e4f
 
 #include <raylib.h>
@@ -20,6 +20,7 @@
 enum Simulation_State{
     START_MENU,
     START_MENU_2,
+    SETTINGS,
     SIMULATION,
     ADD_PLANET_MENU,
     DELETE_PLANET_MENU,
@@ -42,10 +43,11 @@ class Simulation{
     Simulation_State state;
     int window_width;
     int window_height;
-    std::map<std::string, bool> buttons;
+    std::map<std::string, bool>buttons;
+    bool is_esc_clicked;
 
     public:
-    Simulation(int, int);
+    Simulation(const char*);
 
     ~Simulation();
 

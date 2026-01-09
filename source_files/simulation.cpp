@@ -1,28 +1,67 @@
 #include "../header_files/simulation.h"
 #include "../header_files/rcamera.h"
 
-Simulation::Simulation(int width, int height){
+Simulation::Simulation(const char *file_name){
+    this->window_width=1440;
+    this->window_height=920;
+
     this->universe=new Universe();
-    this->grid2d=new Gravitational_Grid_2D(-5e8f, 285, -5.0f, DISTANCE_CONST);
+    this->grid2d=new Gravitational_Grid_2D();
+    this->grid2d->setAmountOfNodes(120);
+    this->grid2d->setDistanceDivider(DISTANCE_CONST);
     this->main_menu=NULL;
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
     this->clicked_planet_menu=NULL;
     this->file_saver=NULL;
     this->file_reader=NULL;
+    this->is_esc_clicked=false;
 
     this->camera={0};
     this->camera.fovy=45.f;
     this->camera.target=(Vector3){0.f, 0.f, 0.f};
     this->camera.position=(Vector3){100.f, 100.f, 100.f};
-    this->camera.up=(Vector3){0.f, 1.f, 0.f};
+    this->camera.up=(Vector3){0.f, 1.f, 0.f}; 
     this->camera.projection=CAMERA_PERSPECTIVE;
 
-    this->window_width=width;
-    this->window_height=height;
+    char tmp[64], tmp1[64], tmp2[64];
+    FILE *f=fopen(file_name, "rb");
+    if(f){
+        fscanf(f, "%s %s", tmp, tmp);
+        this->window_width=atoi(tmp);
+        fscanf(f, "%s %s", tmp, tmp);
+        this->window_height=atoi(tmp);
+        fscanf(f, "%s %s", tmp, tmp);
+        this->grid2d->setStartPos(atof(tmp));
+        fscanf(f, "%s %s", tmp, tmp);
+        this->grid2d->setAmountOfNodes(atoi(tmp));
+        fscanf(f, "%s %s", tmp, tmp);
+        this->grid2d->setDefaultHeightOfGrid(atof(tmp));
+        fscanf(f, "%s %s", tmp, tmp);
+        this->camera.fovy=atof(tmp);
+        fscanf(f, "%s %s %s %s", tmp, tmp, tmp1, tmp2);
+        this->camera.target.x=atof(tmp);
+        this->camera.target.y=atof(tmp1);
+        this->camera.target.z=atof(tmp2);
+        fscanf(f, "%s %s %s %s", tmp, tmp, tmp1, tmp2);
+        this->camera.position.x=atof(tmp);
+        this->camera.position.y=atof(tmp1);
+        this->camera.position.z=atof(tmp2);
+        fscanf(f, "%s %s %s %s", tmp, tmp, tmp1, tmp2);
+        this->camera.up.x=atof(tmp);
+        this->camera.up.y=atof(tmp1);
+        this->camera.up.z=atof(tmp2);
+    }
+    else{
+        printf("Error while opening a file.\n");
+    }
+    fclose(f);
+    f=NULL;
+
     this->state=START_MENU;
     buttons.insert({"Start_sim", false});
     buttons.insert({"Exit", false});
+    buttons.insert({"Settings", false});
     buttons.insert({"Solar_system", false});
     buttons.insert({"Free_mode", false});
     buttons.insert({"Go_back", false});
@@ -32,7 +71,8 @@ Simulation::Simulation(int width, int height){
     buttons.insert({"Save_file", false});
     buttons.insert({"Read_file", false});
 
-    InitWindow(width, height, "Solar System");
+    InitWindow(this->window_width, this->window_height, "Solar System");
+    SetExitKey(KEY_NULL);
     SetTargetFPS(60);
 }
 
@@ -50,12 +90,19 @@ Simulation_State Simulation::getState() const{
 }
 
 void Simulation::calcLogic(){
-    if(IsKeyPressed(KEY_ESCAPE) || WindowShouldClose()){
+    if(WindowShouldClose()){
         this->state=EXIT;
+    }
+    else if(IsKeyPressed(KEY_ESCAPE) && !(this->getState()==START_MENU || this->getState()==START_MENU_2)){
+        this->is_esc_clicked=true;
     }
     else if(buttons["Start_sim"]){
         buttons["Start_sim"]=false;
         this->state=START_MENU_2;
+    }
+    else if(buttons["Settings"]){
+        buttons["Settings"]=false;
+        this->state=SETTINGS;
     }
     else if(buttons["Exit"]){
         buttons["Exit"]=false;
@@ -65,7 +112,7 @@ void Simulation::calcLogic(){
         buttons["Solar_system"]=false;
         this->state=SIMULATION;
         this->main_menu=new Main_Menu(this->window_width, this->window_height);
-        universe->addPlanetToUniverse(Planet(0.1l, 0.1l, 0.l, 0.l, 0.l, 0.l, SUN_RADIUS/10, SUN_MASS, YELLOW, "Sun")); //Sun
+        universe->addPlanetToUniverse(Planet(0.1l, 0.1l, 0.l, 0.l, 0.l, 0.l, SUN_RADIUS/6, SUN_MASS, YELLOW, "Sun")); //Sun
         universe->addPlanetToUniverse(Planet(MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000.l*1.l, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN, "Mercury")); //Mercury
         universe->addPlanetToUniverse(Planet(VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.73l, VENUS_RADIUS, VENUS_MASS, BROWN, "Venus")); //Venus
         universe->addPlanetToUniverse(Planet(EARTH_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l, 0.l, 0.l, 1200000*0.622l, EARTH_RADIUS, EARTH_MASS, GREEN, "Earth")); //Earth
@@ -83,7 +130,12 @@ void Simulation::calcLogic(){
     }
     else if(buttons["Go_back"]){
         buttons["Go_back"]=false;
+        this->is_esc_clicked=false;
+
         if(this->state==START_MENU_2){
+            this->state=START_MENU;
+        }
+        else if(this->state==SETTINGS){
             this->state=START_MENU;
         }
         else if(this->state==ADD_PLANET_MENU){
@@ -138,7 +190,7 @@ void Simulation::calcLogic(){
         file_saver=NULL;
     }
     else if(buttons["Read_file"]){
-        static Universe *new_universe; 
+        static Universe *new_universe;
         buttons["Read_file"]=false;
         this->pause_menu->clearFlags();
 
@@ -166,13 +218,18 @@ void Simulation::drawSimulation(){
 
     switch(this->state){
         case START_MENU:{
-            buttons["Start_sim"]=GuiButton((Rectangle){this->window_width/3, this->window_height/2-20, 120, 40}, "Start simulation");
-            buttons["Exit"]=GuiButton((Rectangle){2*this->window_width/3, this->window_height/2-20, 120, 40}, "Exit");
+            buttons["Start_sim"]=GuiButton((Rectangle){this->window_width/4-60, this->window_height/2-20, 120, 40}, "Start simulation");
+            buttons["Settings"]=GuiButton((Rectangle){this->window_width/2-60, this->window_height/2-20, 120, 40}, "Settings");
+            buttons["Exit"]=GuiButton((Rectangle){3*this->window_width/4-60, this->window_height/2-20, 120, 40}, "Exit");
         }break;
         case START_MENU_2:{
-            buttons["Solar_system"]=GuiButton((Rectangle){this->window_width/4, this->window_height/2-20, 80, 40}, "Solar system");
-            buttons["Free_mode"]=GuiButton((Rectangle){this->window_width/2, this->window_height/2-20, 80, 40}, "Free mode");
-            buttons["Go_back"]=GuiButton((Rectangle){3*this->window_width/4, this->window_height/2-20, 80, 40}, "Go back");
+            buttons["Solar_system"]=GuiButton((Rectangle){this->window_width/4-60, this->window_height/2-20, 120, 40}, "Solar system");
+            buttons["Free_mode"]=GuiButton((Rectangle){this->window_width/2-60, this->window_height/2-20, 120, 40}, "Free mode");
+            buttons["Go_back"]=GuiButton((Rectangle){3*this->window_width/4-60, this->window_height/2-20, 120, 40}, "Go back");
+        }break;
+        case SETTINGS:{
+            //fill later
+
         }break;
         case SIMULATION:{
             if(IsKeyPressed(KEY_L)){
@@ -181,6 +238,16 @@ void Simulation::drawSimulation(){
 
             if(IsKeyPressed(KEY_P)){
                 this->main_menu->changePauseSetting();
+            }
+
+            if(this->is_esc_clicked && !this->clicked_planet_menu){
+                this->buttons["Exit"]=true;
+                this->is_esc_clicked=false;
+            }
+            else if(this->is_esc_clicked && this->clicked_planet_menu){
+                delete this->clicked_planet_menu;
+                this->clicked_planet_menu=NULL;
+                this->is_esc_clicked=false;
             }
 
             universe->calculateGravitiesOfPlanets(this->main_menu->getSpeed());
@@ -204,7 +271,7 @@ void Simulation::drawSimulation(){
                     if(this->clicked_planet_menu){
                         delete this->clicked_planet_menu;
                     }
-                    this->clicked_planet_menu=new ClickedPlanetMenu(&this->universe->getPlanets()[marked_planet], this->window_width, this->window_height, 300, 400);
+                    this->clicked_planet_menu=new ClickedPlanetMenu(&this->universe->getPlanets()[marked_planet], this->window_width, this->window_height, 300, 700);
                 }
             }
 
@@ -240,9 +307,9 @@ void Simulation::drawSimulation(){
 
             this->universe->setOptionsForTmpPlanet(add_planet_menu->getRadius(), add_planet_menu->getMass(), add_planet_menu->getAngle(), add_planet_menu->getDistanceFromCenter(), add_planet_menu->getvelocity(), add_planet_menu->getColor(), add_planet_menu->getName());
 
-            buttons["Go_back"]=GuiButton((Rectangle){5*this->window_width/6, 850, 100, 30}, "Go back.");
-
-            if(GuiButton((Rectangle){5*this->window_width/6+130, 850, 100, 30}, "Accept planet.")){
+            buttons["Go_back"]=(this->add_planet_menu->getGoBackButton()) || this->is_esc_clicked;
+            
+            if(this->add_planet_menu->getAcceptNewPlanetButton()){
                 universe->acceptPlanetToUniverse();
                 buttons["Go_back"]=true;
             }
@@ -260,7 +327,7 @@ void Simulation::drawSimulation(){
 
             delete_planet_menu->drawMenu(this->universe->getPlanets());
 
-            if(delete_planet_menu->getGoBackButton()){
+            if(delete_planet_menu->getGoBackButton() || this->is_esc_clicked){
                 buttons["Go_back"]=true;
             }
             else if(delete_planet_menu->getDeletePlanets()){
@@ -269,7 +336,7 @@ void Simulation::drawSimulation(){
             }
         }break;
         case PAUSE:{
-            if(this->pause_menu->getGoBackButton()){
+            if(this->pause_menu->getGoBackButton() || this->is_esc_clicked){
                 this->buttons["Go_back"]=true;
             }
             else if(this->pause_menu->getExitButton()){

@@ -2,6 +2,7 @@
 #define START_MENU_CONTROLLER_H
 
 #include <raylib.h>
+#include <math.h>
 #include "Start_Menu_Model.h"
 #include "Start_Menu_View.h"
 
@@ -21,6 +22,8 @@ class Start_Menu_Controller{
     Start_Menu_State state;
     Start_Menu_Model *model;
     Start_Menu_View *view;
+    Camera3D camera;
+    int counter;
 
     public:
     Start_Menu_Controller(const unsigned, const unsigned);
