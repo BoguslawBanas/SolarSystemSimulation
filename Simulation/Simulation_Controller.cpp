@@ -23,7 +23,7 @@ void Simulation_Controller::calcLogic(){
 
                     UnloadMusicStream(this->music);
 
-                    this->music=LoadMusicStream("portal-radio-music-uncompressed-and-hq-made-with-Voicemod.mp3");
+                    this->music=LoadMusicStream("music/Aylex - Tension Rising (freetouse.com).mp3");
                     PlayMusicStream(this->music);
                     SetMusicVolume(this->music, 0.5f);
                 } break;
@@ -203,7 +203,8 @@ Simulation_Controller::Simulation_Controller(const char *path){
     fclose(f);
 
     InitAudioDevice();
-    this->music=LoadMusicStream("Procedural_Jiggle_Bone.mp3");
+    // this->music=LoadMusicStream("Procedural_Jiggle_Bone.mp3");
+    this->music=LoadMusicStream("music/Project Ex - Neo Nebula (freetouse.com).mp3");
     PlayMusicStream(this->music);
     SetMusicVolume(this->music, 0.3f);
 
