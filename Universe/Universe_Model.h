@@ -23,7 +23,7 @@ class Universe_Model{
 
     void addPlanet(const Planet_Model&);
 
-    void removePlanet();
+    void removePlanet(const std::vector<int>&);
 
     void removeAllPlanets();
 

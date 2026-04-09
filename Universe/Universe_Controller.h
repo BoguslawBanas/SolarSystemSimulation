@@ -25,7 +25,7 @@ class Universe_Controller{
 
     void deleteTmpPlanet();
 
-    void removePlanet();
+    void removePlanet(const std::vector<int>&);
 
     void removeAllPlanets();
 
@@ -33,7 +33,9 @@ class Universe_Controller{
 
     void updateTmpPlanet(const double, const double, const Vector3&, const Vector3&, const Color&);
 
-    void requestDrawing();
+    const Planet_Model* findPlanetPointedAt(const Camera3D&) const;
+
+    void requestDrawing(const Planet_Model*);
 };
 
 #endif

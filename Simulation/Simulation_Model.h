@@ -5,8 +5,6 @@
 
 enum Simulation_State{
     START_MENU,
-    START_MENU_2,
-    SETTINGS,
     SIMULATION,
     ADD_PLANET_MENU,
     DELETE_PLANET_MENU,

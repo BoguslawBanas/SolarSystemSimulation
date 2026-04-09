@@ -38,8 +38,12 @@ void Universe_Model::addPlanet(const Planet_Model &planet){
 }
 
 
-void Universe_Model::removePlanet(){
-    //fill later
+void Universe_Model::removePlanet(const std::vector<int>&planet_numbers){
+    int already_removed=0;
+    for(int it : planet_numbers){
+        this->planets.erase(this->planets.begin()+it-already_removed);
+        ++already_removed;
+    }
 }
 
 void Universe_Model::removeAllPlanets(){
@@ -68,16 +72,30 @@ void Universe_Model::deleteTmpPlanet(){
 
 void Universe_Model::calcNewPositionsOfPlanets(const float speed){
     this->calc_speed+=speed;
-    while(this->calc_speed>=1.f){
-        for(int i=0;i<this->planets.size();++i){
-            for(int j=i+1;j<this->planets.size();++j){
-                this->planets[i]->calcVelocityFromGravity(*planets[j]); //change later
-            }
-        }
+    if(this->calc_speed<1.f){
+        // for(int i=0;i<this->planets.size();++i){
+        //     for(int j=i+1;j<this->planets.size();++j){
+        //         this->planets[i]->calcVelocityFromGravity(*planets[j]); //change later
+        //     }
+        // }
         
-        for(auto it : this->planets){
-            it->movePlanet();
+        // for(auto it : this->planets){
+        //     it->movePlanet();
+        // }
+        // this->calc_speed=0.f;
+    }
+    else{
+        while(this->calc_speed>=1.f){
+            for(int i=0;i<this->planets.size();++i){
+                for(int j=i+1;j<this->planets.size();++j){
+                    this->planets[i]->calcVelocityFromGravity(*planets[j]); //change later
+                }
+            }
+        
+            for(auto it : this->planets){
+                it->movePlanet();
+            }
+            this->calc_speed-=1.f;
         }
-        this->calc_speed-=1.f;
     }
 }

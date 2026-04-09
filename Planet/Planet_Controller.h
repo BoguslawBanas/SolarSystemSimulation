@@ -16,7 +16,7 @@ class Planet_Controller{
 
     ~Planet_Controller();
 
-    void calcNewPosition() const;
+    // void calcNewPosition() const;
 
     void requestDrawing(const double, const double) const;
 

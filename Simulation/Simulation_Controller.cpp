@@ -7,28 +7,30 @@ void Simulation_Controller::calcLogic(){
     switch(state){
         case START_MENU:{
             this->start_menu->calcLogic();
-            if(this->start_menu->getState()==TRANSITION_TO_SIMULATION){
-                this->simulation_model->setState(SIMULATION);
-                this->getUniverseController()->addPlanet(Vector3{0.1l, 0.1l, 0.l}, Vector3{0.l, 0.l, 0.l}, SUN_RADIUS/6, SUN_MASS, YELLOW, "Sun"); //Sun
-                this->getUniverseController()->addPlanet(Vector3{MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000.l*1.l}, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN, "Mercury"); //Mercury
-                this->getUniverseController()->addPlanet(Vector3{VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.73l}, VENUS_RADIUS, VENUS_MASS, BROWN, "Venus"); //Venus
-                this->getUniverseController()->addPlanet(Vector3{EARTH_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.622l}, EARTH_RADIUS, EARTH_MASS, GREEN, "Earth"); //Earth
-                this->getUniverseController()->addPlanet(Vector3{MARS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.503l}, MARS_RADIUS, MARS_MASS, RED, "Mars"); //Mars
-                this->getUniverseController()->addPlanet(Vector3{JUPITER_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.273l}, JUPITER_RADIUS, JUPITER_MASS, LIGHTGRAY, "Jupiter"); //Jupiter
-                this->getUniverseController()->addPlanet(Vector3{SATURN_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.203l}, SATURN_RADIUS, SATURN_MASS, GRAY, "Saturn"); //Saturn
-                this->getUniverseController()->addPlanet(Vector3{URANUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.142l}, URANUS_RADIUS, URANUS_MASS, BLUE, "Uranus"); //Uranus
-                this->getUniverseController()->addPlanet(Vector3{NEPTUNE_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.113l}, NEPTUNE_RADIUS, NEPTUNE_MASS, BLUE, "Neptune"); //Neptune
-                this->getUniverseController()->addPlanet(Vector3{PLUTO_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.099l}, PLUTO_RADIUS, PLUTO_MASS, GRAY, "Pluto"); //Pluto
+            switch(this->start_menu->getState()){
+                case TRANSITION_TO_SIMULATION:{
+                    this->simulation_model->setState(SIMULATION);
+                    this->getUniverseController()->addPlanet(Vector3{0.1l, 0.1l, 0.l}, Vector3{0.l, 0.l, 0.l}, SUN_RADIUS/6, SUN_MASS, YELLOW, "Sun"); //Sun
+                    this->getUniverseController()->addPlanet(Vector3{MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000.l*1.l}, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN, "Mercury"); //Mercury
+                    this->getUniverseController()->addPlanet(Vector3{VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.73l}, VENUS_RADIUS, VENUS_MASS, BROWN, "Venus"); //Venus
+                    this->getUniverseController()->addPlanet(Vector3{EARTH_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.622l}, EARTH_RADIUS, EARTH_MASS, GREEN, "Earth"); //Earth
+                    this->getUniverseController()->addPlanet(Vector3{MARS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.503l}, MARS_RADIUS, MARS_MASS, RED, "Mars"); //Mars
+                    this->getUniverseController()->addPlanet(Vector3{JUPITER_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.273l}, JUPITER_RADIUS, JUPITER_MASS, LIGHTGRAY, "Jupiter"); //Jupiter
+                    this->getUniverseController()->addPlanet(Vector3{SATURN_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.203l}, SATURN_RADIUS, SATURN_MASS, GRAY, "Saturn"); //Saturn
+                    this->getUniverseController()->addPlanet(Vector3{URANUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.142l}, URANUS_RADIUS, URANUS_MASS, BLUE, "Uranus"); //Uranus
+                    this->getUniverseController()->addPlanet(Vector3{NEPTUNE_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.113l}, NEPTUNE_RADIUS, NEPTUNE_MASS, BLUE, "Neptune"); //Neptune
+                    this->getUniverseController()->addPlanet(Vector3{PLUTO_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.099l}, PLUTO_RADIUS, PLUTO_MASS, GRAY, "Pluto"); //Pluto
 
-                UnloadMusicStream(this->music);
+                    UnloadMusicStream(this->music);
 
-                this->music=LoadMusicStream("portal-radio-music-uncompressed-and-hq-made-with-Voicemod.mp3");
-                PlayMusicStream(this->music);
-                SetMusicVolume(this->music, 0.5f);
+                    this->music=LoadMusicStream("portal-radio-music-uncompressed-and-hq-made-with-Voicemod.mp3");
+                    PlayMusicStream(this->music);
+                    SetMusicVolume(this->music, 0.5f);
+                } break;
+                case START_MENU_EXIT:{
+                    this->simulation_model->setState(EXIT);
+                } break;
             }
-        } break;
-        case SETTINGS:{
-            
         } break;
         case SIMULATION:{
             this->main_menu->calcLogic();
@@ -101,15 +103,12 @@ void Simulation_Controller::drawNextFrame(){
         case START_MENU:{
             this->start_menu->requestDrawing();
         } break;
-        case SETTINGS:{
-            //fill later
-        } break;
         case SIMULATION:{
             BeginMode3D(camera);
             if(this->grid){
                 this->grid->requestDrawing();
             }
-            this->universe_controller->requestDrawing();
+            this->universe_controller->requestDrawing(this->getUniverseController()->findPlanetPointedAt(this->camera));
             EndMode3D();
 
             this->main_menu->requestDrawing();
@@ -124,7 +123,7 @@ void Simulation_Controller::drawNextFrame(){
                 this->grid->requestDrawing();
             }
 
-            this->universe_controller->requestDrawing();
+            this->universe_controller->requestDrawing(this->getUniverseController()->findPlanetPointedAt(this->camera));
             EndMode3D();
 
             this->add_planet_menu->requestDrawing();
@@ -230,6 +229,8 @@ Simulation_Controller::~Simulation_Controller(){
     delete this->universe_controller;
     delete this->grid;
     delete this->main_menu;
+    delete this->add_planet_menu;
+    delete this->options;
     UnloadMusicStream(this->music);
     CloseAudioDevice();
 }

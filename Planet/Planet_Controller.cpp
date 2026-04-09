@@ -15,9 +15,9 @@ Planet_Controller::~Planet_Controller(){
     delete this->view;
 }
 
-void Planet_Controller::calcNewPosition() const{
-    this->model->movePlanet();
-}
+// void Planet_Controller::calcNewPosition() const{
+//     this->model->movePlanet();
+// }
 
 void Planet_Controller::requestDrawing(const double distance_div, const double radius_div) const{
     this->view->draw(this->model->getPosition(), this->model->getRadius(), this->model->getColor(), distance_div, radius_div);

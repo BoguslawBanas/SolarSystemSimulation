@@ -8,6 +8,7 @@
 #include "../Add_Planet_Menu/Add_Planet_Menu_Controller.h"
 #include "../Gravitational_Grid_2D/Gravitational_Grid_2D_Controller.h"
 #include "../Start_Menu/Start_Menu_Controller.h"
+#include "../Options/Options_Controller.h"
 
 class Simulation_Controller{
     private:
@@ -20,6 +21,7 @@ class Simulation_Controller{
     Add_Planet_Menu_Controller *add_planet_menu;
     Gravitational_Grid_2D_Controller *grid;
     Start_Menu_Controller *start_menu;
+    Options_Controller *options;
     
     bool is_esc_clicked;
 

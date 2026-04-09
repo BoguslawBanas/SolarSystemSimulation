@@ -31,6 +31,7 @@
         Gravitational_Grid_2D/*.cpp ^
         Add_Planet_Menu/*.cpp ^
         Start_Menu/*.cpp ^
+        Options/*.cpp ^
     -pthread -lraylib -lgdi32 -lwinmm -lcomdlg32
 )
 

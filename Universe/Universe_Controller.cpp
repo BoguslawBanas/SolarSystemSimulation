@@ -21,8 +21,8 @@ void Universe_Controller::addPlanet(const Vector3 position, const Vector3 veloci
     this->model->addPlanet(planet_m);
 }
 
-void Universe_Controller::removePlanet(){
-    //fill later
+void Universe_Controller::removePlanet(const std::vector<int>&planet_numbers){
+    this->model->removePlanet(planet_numbers);
 }
 
 void Universe_Controller::removeAllPlanets(){
@@ -49,6 +49,25 @@ void Universe_Controller::updateTmpPlanet(const double mass, const double radius
     this->model->updateTmpPlanet(mass, radius, distance_from_center, velocity, color);
 }
 
-void Universe_Controller::requestDrawing(){
-    this->view->drawUniverse(this->model->getPlanets(), this->model->getTmpPlanet());
+const Planet_Model* Universe_Controller::findPlanetPointedAt(const Camera3D &camera) const{
+    Planet_Model *planet_pointed=NULL;
+    for(auto it : this->getModel()->getPlanets()){
+        if(it->isCursorOnPlanet(camera, this->view->getRadiusDivider(), this->view->getDistanceDivider())){
+            if(!planet_pointed){
+                planet_pointed=it;
+            }
+            else{
+                float f1=calcDistanceWithoutSqrt(camera.position, planet_pointed->getPosition());
+                float f2=calcDistanceWithoutSqrt(camera.position, it->getPosition());
+                if(f2>f1){
+                    planet_pointed=it;
+                }
+            }
+        }
+    }
+    return planet_pointed;
+}
+
+void Universe_Controller::requestDrawing(const Planet_Model *planet_pointed){
+    this->view->drawUniverse(this->model->getPlanets(), this->model->getTmpPlanet(), planet_pointed);
 }

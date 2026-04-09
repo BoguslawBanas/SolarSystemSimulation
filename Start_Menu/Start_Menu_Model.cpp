@@ -19,4 +19,3 @@ const Rectangle& Start_Menu_Model::getButton2() const{
 const Rectangle& Start_Menu_Model::getButton3() const{
     return this->button3_bounds;
 }
-

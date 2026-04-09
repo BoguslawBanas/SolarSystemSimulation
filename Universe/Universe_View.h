@@ -16,7 +16,11 @@ class Universe_View{
 
     ~Universe_View();
 
-    void drawUniverse(const std::vector<Planet_Model*>&, const Planet_Model*);
+    const float getDistanceDivider() const;
+
+    const float getRadiusDivider() const;
+
+    void drawUniverse(const std::vector<Planet_Model*>&, const Planet_Model*, const Planet_Model*);
 };
 
 #endif
