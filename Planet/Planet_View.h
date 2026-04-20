@@ -11,7 +11,9 @@ class Planet_View{
 
     ~Planet_View();
 
-    static void draw(const Vector3&, const double, const Color&, const double, const double);
+    // static void draw(const Vector3&, const double, const Color&, const double, const double);
+
+    static void draw(const Model&, const Vector3&, const double, const double);
 
     static void markPlanet(const Vector3&, const double, const double, const double);
 };

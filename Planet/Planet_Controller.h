@@ -12,7 +12,7 @@ class Planet_Controller{
     public:
     Planet_Controller();
 
-    Planet_Controller(const Vector3, const Vector3, const double, const double, const Color, const char*);
+    Planet_Controller(const Vector3, const Vector3, const double, const double, const Color, const char*, const char*);
 
     ~Planet_Controller();
 

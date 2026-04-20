@@ -9,16 +9,30 @@ Planet_Model::Planet_Model(){
     this->name[0]='\0';
 }
 
-Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color &color, const char *name){
+Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color &color, const char *name, const char *path_to_image){
     this->position=position;
     this->velocity=velocity;
     this->radius=radius;
     this->mass=mass;
     this->color=color;
     strncpy(this->name, name, 255);
+
+    Image image=LoadImage(path_to_image);
+    ImageFlipHorizontal(&image);
+    ImageRotateCCW(&image);
+    this->texture=LoadTextureFromImage(image);
+    UnloadImage(image);
+
+    this->mesh=GenMeshSphere(this->radius, 32, 32);
+    this->model=LoadModelFromMesh(mesh);
+    SetMaterialTexture(&this->model.materials[0], MATERIAL_MAP_DIFFUSE, this->texture);
 }
 
-Planet_Model::~Planet_Model()=default;
+Planet_Model::~Planet_Model(){
+    UnloadTexture(this->texture);
+    UnloadMesh(this->mesh);
+    UnloadModel(this->model);
+}
 
 const Vector3& Planet_Model::getPosition() const{
     return this->position;
@@ -42,6 +56,10 @@ Color Planet_Model::getColor() const{
 
 const char* Planet_Model::getName() const{
     return this->name;
+}
+
+const Model& Planet_Model::getModel() const{
+    return this->model;
 }
 
 void Planet_Model::setPosition(Vector3 new_position){

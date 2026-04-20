@@ -15,11 +15,14 @@ class Planet_Model{
     double mass;
     Color color;
     char name[256];
+    Texture texture;
+    Mesh mesh;
+    Model model;
 
     public:
     Planet_Model();
 
-    Planet_Model(const Vector3, const Vector3, const double, const double, const Color&, const char*);
+    Planet_Model(const Vector3, const Vector3, const double, const double, const Color&, const char*, const char*);
 
     ~Planet_Model();
 
@@ -34,6 +37,8 @@ class Planet_Model{
     Color getColor() const;
 
     const char* getName() const;
+
+    const Model &getModel() const;
 
     void setPosition(const Vector3);
 
