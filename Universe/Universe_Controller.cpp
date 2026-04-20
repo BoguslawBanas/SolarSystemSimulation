@@ -14,10 +14,8 @@ const Universe_Model* const Universe_Controller::getModel() const{
     return this->model;
 }
 
-void Universe_Controller::addPlanet(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name){
-    Planet_Model *planet_m=new Planet_Model(position, velocity, radius, mass, color, name);
-    Planet_View *planet_v=new Planet_View();
-
+void Universe_Controller::addPlanet(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name, const char *path_to_image){
+    Planet_Model *planet_m=new Planet_Model(position, velocity, radius, mass, color, name, path_to_image);
     this->model->addPlanet(planet_m);
 }
 

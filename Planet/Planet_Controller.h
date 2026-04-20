@@ -7,7 +7,7 @@
 class Planet_Controller{
     private:
     Planet_Model *model;
-    Planet_View *view;
+    // Planet_View *view;
 
     public:
     Planet_Controller();

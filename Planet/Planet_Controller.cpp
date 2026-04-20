@@ -2,17 +2,17 @@
 
 Planet_Controller::Planet_Controller(){
     this->model=new Planet_Model();
-    this->view=new Planet_View();
+    // this->view=new Planet_View();
 }
 
 Planet_Controller::Planet_Controller(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name, const char *path_to_image){
     this->model=new Planet_Model(position, velocity, radius, mass, color, name, path_to_image);
-    this->view=new Planet_View();
+    // this->view=new Planet_View();
 }
 
 Planet_Controller::~Planet_Controller(){
     delete this->model;
-    delete this->view;
+    // delete this->view;
 }
 
 // void Planet_Controller::calcNewPosition() const{
@@ -20,8 +20,8 @@ Planet_Controller::~Planet_Controller(){
 // }
 
 void Planet_Controller::requestDrawing(const double distance_div, const double radius_div) const{
-    // this->view->draw(this->model->getPosition(), this->model->getRadius(), this->model->getColor(), distance_div, radius_div);
-    this->view->draw(this->model->getModel(), this->model->getPosition(), distance_div, radius_div);
+    // this->view->draw(this->model->getModel(), this->model->getPosition(), distance_div, radius_div);
+    Planet_View::draw(this->model->getModel(), this->model->getPosition(), distance_div, radius_div);
 }
 
 bool Planet_Controller::isCursorOnThePlanet(const Camera3D &camera, const double distance_div, const double radius_div) const{

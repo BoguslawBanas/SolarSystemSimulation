@@ -10,16 +10,16 @@ void Simulation_Controller::calcLogic(){
             switch(this->start_menu->getState()){
                 case TRANSITION_TO_SIMULATION:{
                     this->simulation_model->setState(SIMULATION);
-                    this->getUniverseController()->addPlanet(Vector3{0.1l, 0.1l, 0.l}, Vector3{0.l, 0.l, 0.l}, SUN_RADIUS/6, SUN_MASS, YELLOW, "Sun"); //Sun
-                    this->getUniverseController()->addPlanet(Vector3{MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000.l*1.l}, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN, "Mercury"); //Mercury
-                    this->getUniverseController()->addPlanet(Vector3{VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.73l}, VENUS_RADIUS, VENUS_MASS, BROWN, "Venus"); //Venus
-                    this->getUniverseController()->addPlanet(Vector3{EARTH_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.622l}, EARTH_RADIUS, EARTH_MASS, GREEN, "Earth"); //Earth
-                    this->getUniverseController()->addPlanet(Vector3{MARS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.503l}, MARS_RADIUS, MARS_MASS, RED, "Mars"); //Mars
-                    this->getUniverseController()->addPlanet(Vector3{JUPITER_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.273l}, JUPITER_RADIUS, JUPITER_MASS, LIGHTGRAY, "Jupiter"); //Jupiter
-                    this->getUniverseController()->addPlanet(Vector3{SATURN_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.203l}, SATURN_RADIUS, SATURN_MASS, GRAY, "Saturn"); //Saturn
-                    this->getUniverseController()->addPlanet(Vector3{URANUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.142l}, URANUS_RADIUS, URANUS_MASS, BLUE, "Uranus"); //Uranus
-                    this->getUniverseController()->addPlanet(Vector3{NEPTUNE_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.113l}, NEPTUNE_RADIUS, NEPTUNE_MASS, BLUE, "Neptune"); //Neptune
-                    this->getUniverseController()->addPlanet(Vector3{PLUTO_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.099l}, PLUTO_RADIUS, PLUTO_MASS, GRAY, "Pluto"); //Pluto
+                    this->getUniverseController()->addPlanet(Vector3{0.1l, 0.1l, 0.l}, Vector3{0.l, 0.l, 0.l}, SUN_RADIUS/6, SUN_MASS, YELLOW, "Sun", PATH_TO_SUN_TEXTURE); //Sun
+                    this->getUniverseController()->addPlanet(Vector3{MERCURY_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000.l*1.l}, MERCURY_RADIUS, MERCURY_MASS, DARKBROWN, "Mercury", PATH_TO_MERCURY_TEXTURE); //Mercury
+                    this->getUniverseController()->addPlanet(Vector3{VENUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.73l}, VENUS_RADIUS, VENUS_MASS, BROWN, "Venus", PATH_TO_VENUS_TEXTURE); //Venus
+                    this->getUniverseController()->addPlanet(Vector3{EARTH_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.622l}, EARTH_RADIUS, EARTH_MASS, GREEN, "Earth", PATH_TO_EARTH_TEXTURE); //Earth
+                    this->getUniverseController()->addPlanet(Vector3{MARS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.503l}, MARS_RADIUS, MARS_MASS, RED, "Mars", PATH_TO_MARS_TEXTURE); //Mars
+                    this->getUniverseController()->addPlanet(Vector3{JUPITER_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.273l}, JUPITER_RADIUS, JUPITER_MASS, LIGHTGRAY, "Jupiter", PATH_TO_JUPITER_TEXTURE); //Jupiter
+                    this->getUniverseController()->addPlanet(Vector3{SATURN_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.203l}, SATURN_RADIUS, SATURN_MASS, GRAY, "Saturn", PATH_TO_SATURN_TEXTURE); //Saturn
+                    this->getUniverseController()->addPlanet(Vector3{URANUS_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.142l}, URANUS_RADIUS, URANUS_MASS, BLUE, "Uranus", PATH_TO_URANUS_TEXTURE); //Uranus
+                    this->getUniverseController()->addPlanet(Vector3{NEPTUNE_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.113l}, NEPTUNE_RADIUS, NEPTUNE_MASS, BLUE, "Neptune", PATH_TO_NEPTUNE_TEXTURE); //Neptune
+                    // this->getUniverseController()->addPlanet(Vector3{PLUTO_DISTANCE_FROM_SUN+SUN_RADIUS, 0.l, 0.l}, Vector3{0.l, 0.l, 1200000*0.099l}, PLUTO_RADIUS, PLUTO_MASS, GRAY, "Pluto"); //Pluto
 
                     UnloadMusicStream(this->music);
 

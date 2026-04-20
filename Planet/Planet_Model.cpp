@@ -108,9 +108,8 @@ void Planet_Model::calcVelocityFromGravity(Planet_Model &another_planet){
         force_z=-force_z;
     }
             
-    this->setVelocity((Vector3){this->getVelocity().x+(force_x/this->getMass()), this->getVelocity().y+(force_y/this->getMass()), this->getVelocity().z+(force_z/this->getMass())});
-    another_planet.setVelocity((Vector3){another_planet.getVelocity().x-(force_x/another_planet.getMass()), another_planet.getVelocity().y-(force_y/another_planet.getMass()), another_planet.getVelocity().z-(force_z/another_planet.getMass())});
-    // return mult-round(mult);
+    this->setVelocity((Vector3){this->getVelocity().x+float(force_x/this->getMass()), this->getVelocity().y+float(force_y/this->getMass()), this->getVelocity().z+float(force_z/this->getMass())});
+    another_planet.setVelocity((Vector3){another_planet.getVelocity().x-float(force_x/another_planet.getMass()), another_planet.getVelocity().y-float(force_y/another_planet.getMass()), another_planet.getVelocity().z-float(force_z/another_planet.getMass())});
 }
 
 void Planet_Model::movePlanet(){

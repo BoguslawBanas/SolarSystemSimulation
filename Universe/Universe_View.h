@@ -7,7 +7,7 @@
 
 class Universe_View{
     private:
-    Planet_View *planet_view;
+    // Planet_View *planet_view;
     float distance_divider;
     float radius_divider;
 

@@ -42,4 +42,14 @@
 #define PLUTO_MASS 0.013e24l
 #define PLUTO_DISTANCE_FROM_SUN 5.9064e9l
 
+#define PATH_TO_SUN_TEXTURE "textures/2k_sun.jpg"
+#define PATH_TO_MERCURY_TEXTURE "textures/2k_mercury.jpg"
+#define PATH_TO_VENUS_TEXTURE "textures/2k_venus_surface.jpg"
+#define PATH_TO_EARTH_TEXTURE "textures/2k_earth_daymap.jpg"
+#define PATH_TO_MARS_TEXTURE "textures/2k_mars.jpg"
+#define PATH_TO_JUPITER_TEXTURE "textures/2k_jupiter.jpg"
+#define PATH_TO_SATURN_TEXTURE "textures/2k_saturn.jpg"
+#define PATH_TO_URANUS_TEXTURE "textures/2k_uranus.jpg"
+#define PATH_TO_NEPTUNE_TEXTURE "textures/2k_neptune.jpg"
+
 #endif
