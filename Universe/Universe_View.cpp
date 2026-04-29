@@ -1,14 +1,11 @@
 #include "Universe_View.h"
 
 Universe_View::Universe_View(const float distance_div, const float radius_div){
-    // this->planet_view=new Planet_View();
     this->distance_divider=distance_div;
     this->radius_divider=radius_div;
 }
 
-Universe_View::~Universe_View(){
-    // delete this->planet_view;
-}
+Universe_View::~Universe_View()=default; 
 
 const float Universe_View::getDistanceDivider() const{
     return this->distance_divider;
