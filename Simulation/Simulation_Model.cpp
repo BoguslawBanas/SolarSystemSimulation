@@ -10,7 +10,7 @@ Simulation_Model::Simulation_Model(){
     this->go_back=false;
     this->add_planet=false;
     this->delete_planet=false;
-    this->pause-false;
+    this->pause=false;
     this->save_file=false;
     this->read_file=false;
 }

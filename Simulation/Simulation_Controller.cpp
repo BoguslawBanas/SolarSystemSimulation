@@ -42,13 +42,12 @@ void Simulation_Controller::calcLogic(){
             }
             if(this->main_menu->getIsAddNewPlanetButtonClicked()){
                 this->simulation_model->setAddPlanet(true);
-                this->getUniverseController()->addTmpPlanet();
             }
             if(this->simulation_model->getAddPlanet()){
+                this->universe_controller->addTmpPlanet();
+                this->add_planet_menu=new Add_Planet_Menu_Controller(this->simulation_view->getWindowWidth(), this->simulation_view->getWindowHeight());
                 this->simulation_model->setAddPlanet(false);
                 this->simulation_model->setState(ADD_PLANET_MENU);
-                this->add_planet_menu=new Add_Planet_Menu_Controller(this->simulation_view->getWindowWidth(), this->simulation_view->getWindowHeight());
-                this->universe_controller->addTmpPlanet();
             }
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
@@ -203,7 +202,6 @@ Simulation_Controller::Simulation_Controller(const char *path){
     fclose(f);
 
     InitAudioDevice();
-    // this->music=LoadMusicStream("Procedural_Jiggle_Bone.mp3");
     this->music=LoadMusicStream("music/Project Ex - Neo Nebula (freetouse.com).mp3");
     PlayMusicStream(this->music);
     SetMusicVolume(this->music, 0.3f);
@@ -217,7 +215,7 @@ Simulation_Controller::Simulation_Controller(const char *path){
     this->add_planet_menu=NULL;
     this->is_esc_clicked=false;
 
-    this->camera={};
+    this->camera={0};
     this->camera.fovy=camera_fov;
     this->camera.position=camera_position;
     this->camera.target=camera_target;

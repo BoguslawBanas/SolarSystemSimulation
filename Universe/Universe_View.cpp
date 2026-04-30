@@ -26,6 +26,7 @@ void Universe_View::drawUniverse(const std::vector<Planet_Model*>&planets, const
     }
 
     if(tmp_planet){
-        Planet_View::draw(tmp_planet->getModel(), tmp_planet->getPosition(), this->distance_divider, this->radius_divider);
+        Planet_View::draw(tmp_planet->getModel(), tmp_planet->getPosition(), this->distance_divider, this->radius_divider, tmp_planet->getRadius());
     }
+    
 }

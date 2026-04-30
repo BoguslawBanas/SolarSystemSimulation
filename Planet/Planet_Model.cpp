@@ -3,10 +3,15 @@
 Planet_Model::Planet_Model(){
     this->position=(Vector3){0.f, 0.f, 0.f};
     this->velocity=(Vector3){0.f, 0.f, 0.f};
-    this->radius=0.0;
+    this->radius=1.0;
     this->mass=0.0;
-    this->color=(Color){0, 0, 0};
     this->name[0]='\0';
+    this->texture_path[0]='\0';
+
+    this->texture=Texture2D{0};
+    Mesh mesh=GenMeshSphere(this->radius, 32, 32);
+    this->model=LoadModelFromMesh(mesh);
+    this->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].color=WHITE;
 }
 
 Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color &color, const char *name, const char *path_to_image){
@@ -14,24 +19,23 @@ Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const
     this->velocity=velocity;
     this->radius=radius;
     this->mass=mass;
-    this->color=color;
     strncpy(this->name, name, 255);
+    strncpy(this->texture_path, path_to_image, 511);
 
-    Image image=LoadImage(path_to_image);
+    Image image=LoadImage(this->texture_path);
     ImageFlipHorizontal(&image);
     ImageRotateCCW(&image);
     this->texture=LoadTextureFromImage(image);
     UnloadImage(image);
 
-    this->mesh=GenMeshSphere(this->radius, 32, 32);
+    Mesh mesh=GenMeshSphere(this->radius, 32, 32);
     this->model=LoadModelFromMesh(mesh);
     SetMaterialTexture(&this->model.materials[0], MATERIAL_MAP_DIFFUSE, this->texture);
 }
 
 Planet_Model::~Planet_Model(){
-    UnloadTexture(this->texture);
-    UnloadMesh(this->mesh);
     UnloadModel(this->model);
+    UnloadTexture(this->texture);
 }
 
 const Vector3& Planet_Model::getPosition() const{
@@ -51,11 +55,15 @@ double Planet_Model::getMass() const{
 }
 
 Color Planet_Model::getColor() const{
-    return this->color;
+    return this->model.materials[MATERIAL_MAP_DIFFUSE].maps[0].color;
 }
 
 const char* Planet_Model::getName() const{
     return this->name;
+}
+
+const char* Planet_Model::getTexturePath() const{
+    return this->texture_path;
 }
 
 const Model& Planet_Model::getModel() const{
@@ -79,11 +87,15 @@ void Planet_Model::setMass(const double new_mass){
 }
 
 void Planet_Model::setColor(const Color &new_color){
-    this->color=new_color;
+    this->model.materials[MATERIAL_MAP_DIFFUSE].maps[0].color=new_color;
 }
 
 void Planet_Model::setName(const char *new_name){
     strncpy(this->name, new_name, 255);
+}
+
+void Planet_Model::setTexturePath(const char *texture_path){
+    strncpy(this->texture_path, texture_path, 511);
 }
 
 double Planet_Model::calcDistanceBetweenTwoPlanets(const Planet_Model &another_planet) const{
@@ -124,4 +136,25 @@ bool Planet_Model::isCursorOnPlanet(const Camera3D &camera, const double radius_
     planet_pos.z/=distance_divider;
     RayCollision ray_collision=GetRayCollisionSphere(ray, planet_pos, this->getRadius()/radius_divider);
     return ray_collision.hit;
+}
+
+void Planet_Model::confirmModel(){
+    UnloadTexture(this->texture);
+    Color tmp_color=this->getColor();
+
+    UnloadModel(this->model);
+    Mesh mesh=GenMeshSphere(this->radius, 32, 32);
+    this->model=LoadModelFromMesh(mesh);
+
+    if(this->texture_path[0]!='\0'){
+        Image image=LoadImage(this->texture_path);
+        ImageFlipHorizontal(&image);
+        ImageRotateCCW(&image);
+        this->texture=LoadTextureFromImage(image);
+        UnloadImage(image);
+        SetMaterialTexture(&this->model.materials[0], MATERIAL_MAP_DIFFUSE, this->texture);
+    }
+    else{
+        model.materials[MATERIAL_MAP_DIFFUSE].maps[0].color=tmp_color;
+    }
 }

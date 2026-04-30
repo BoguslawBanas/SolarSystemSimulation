@@ -34,6 +34,8 @@ void Universe_Model::addPlanet(const Planet_Model &planet){
     new_planet->setRadius(planet.getRadius());
     new_planet->setVelocity(planet.getVelocity());
     new_planet->setColor(planet.getColor());
+    new_planet->setTexturePath(planet.getTexturePath());
+    new_planet->confirmModel();
     this->planets.push_back(new_planet);
 }
 

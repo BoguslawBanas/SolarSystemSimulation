@@ -13,10 +13,9 @@ class Planet_Model{
     Vector3 velocity;
     double radius;
     double mass;
-    Color color;
     char name[256];
+    char texture_path[512];
     Texture texture;
-    Mesh mesh;
     Model model;
 
     public:
@@ -38,7 +37,9 @@ class Planet_Model{
 
     const char* getName() const;
 
-    const Model &getModel() const;
+    const char* getTexturePath() const;
+
+    const Model& getModel() const;
 
     void setPosition(const Vector3);
 
@@ -52,6 +53,8 @@ class Planet_Model{
 
     void setName(const char*);
 
+    void setTexturePath(const char*);
+
     double calcDistanceBetweenTwoPlanets(const Planet_Model&) const;
 
     void calcVelocityFromGravity(Planet_Model&);
@@ -59,6 +62,8 @@ class Planet_Model{
     void movePlanet();
     
     bool isCursorOnPlanet(const Camera3D&, const double, const double) const;
+
+    void confirmModel();
 };
 
 #endif
