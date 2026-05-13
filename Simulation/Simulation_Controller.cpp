@@ -40,6 +40,7 @@ void Simulation_Controller::calcLogic(){
             if(!this->main_menu->getIsCameraLocked()){
                 UpdateCameraCustom(&camera, 1);
             }
+            //change later
             if(this->main_menu->getIsAddNewPlanetButtonClicked()){
                 this->simulation_model->setAddPlanet(true);
             }
@@ -48,6 +49,15 @@ void Simulation_Controller::calcLogic(){
                 this->add_planet_menu=new Add_Planet_Menu_Controller(this->simulation_view->getWindowWidth(), this->simulation_view->getWindowHeight());
                 this->simulation_model->setAddPlanet(false);
                 this->simulation_model->setState(ADD_PLANET_MENU);
+            }
+            //change later too!
+            if(this->main_menu->getIsDeletePlanetButtonClicked()){
+                this->simulation_model->setDeletePlanet(true);
+            }
+            if(this->simulation_model->getDeletePlanet()){
+                this->delete_planet_menu=new Delete_Planet_Menu_Controller(this->simulation_view->getWindowWidth(), this->simulation_view->getWindowHeight(), this->getUniverseController()->getModel()->getPlanets().size());
+                this->simulation_model->setDeletePlanet(false);
+                this->simulation_model->setState(DELETE_PLANET_MENU);
             }
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
@@ -77,7 +87,22 @@ void Simulation_Controller::calcLogic(){
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
         case DELETE_PLANET_MENU:{
-            
+            this->main_menu->calcLogic();
+
+            if(!this->main_menu->getIsCameraLocked()){
+                UpdateCameraCustom(&camera, 1);
+            }
+
+            if(this->delete_planet_menu->getErasingChosenPlanetsButton()){
+                //fill later
+            }
+            else if(this->delete_planet_menu->getGoBackButton()){
+                this->simulation_model->setState(SIMULATION);
+                delete this->delete_planet_menu;
+                this->delete_planet_menu=NULL;
+            }
+
+            this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
         case PAUSE:{
 
@@ -128,7 +153,15 @@ void Simulation_Controller::drawNextFrame(){
             this->add_planet_menu->requestDrawing();
         } break;
         case DELETE_PLANET_MENU:{
-            
+            BeginMode3D(camera);
+            if(this->grid){
+                this->grid->requestDrawing();
+            }
+
+            this->universe_controller->requestDrawing(this->getUniverseController()->findPlanetPointedAt(this->camera));
+            EndMode3D();
+
+            this->delete_planet_menu->requestDrawing(this->getUniverseController()->getModel()->getPlanets());
         } break;
         case PAUSE:{
 
@@ -213,6 +246,7 @@ Simulation_Controller::Simulation_Controller(const char *path){
     this->grid=new Gravitational_Grid_2D_Controller(start_pos, amount_of_nodes, default_height, distance_div);
     this->start_menu=new Start_Menu_Controller(window_width, window_height);
     this->add_planet_menu=NULL;
+    this->delete_planet_menu=NULL;
     this->is_esc_clicked=false;
 
     this->camera={0};
@@ -229,6 +263,7 @@ Simulation_Controller::~Simulation_Controller(){
     delete this->grid;
     delete this->main_menu;
     delete this->add_planet_menu;
+    delete this->delete_planet_menu;
     delete this->options;
     UnloadMusicStream(this->music);
     CloseAudioDevice();

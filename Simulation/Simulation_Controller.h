@@ -6,6 +6,7 @@
 #include "../Universe/Universe_Controller.h"
 #include "../Main_Menu/Main_Menu_Controller.h"
 #include "../Add_Planet_Menu/Add_Planet_Menu_Controller.h"
+#include "../Delete_Planet_Menu/Delete_Planet_Menu_Controller.h"
 #include "../Gravitational_Grid_2D/Gravitational_Grid_2D_Controller.h"
 #include "../Start_Menu/Start_Menu_Controller.h"
 #include "../Options/Options_Controller.h"
@@ -19,6 +20,7 @@ class Simulation_Controller{
     Universe_Controller *universe_controller;
     Main_Menu_Controller *main_menu;
     Add_Planet_Menu_Controller *add_planet_menu;
+    Delete_Planet_Menu_Controller *delete_planet_menu;
     Gravitational_Grid_2D_Controller *grid;
     Start_Menu_Controller *start_menu;
     Options_Controller *options;

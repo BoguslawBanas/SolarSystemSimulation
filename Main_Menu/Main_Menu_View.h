@@ -11,7 +11,7 @@ class Main_Menu_View{
 
     ~Main_Menu_View();
 
-    void draw(const bool, const Rectangle&);
+    void draw(const bool, const Rectangle&, const Rectangle&);
 };
 
 #endif

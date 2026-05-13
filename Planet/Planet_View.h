@@ -2,8 +2,6 @@
 #define PLANET_VIEW_H
 
 #include <raylib.h>
-//remove
-#include <stdio.h>
 
 class Planet_View{
     public:
