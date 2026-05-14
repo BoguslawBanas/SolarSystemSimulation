@@ -13,6 +13,8 @@ class Delete_Planet_Menu_Controller{
     bool *list_of_checkboxes;
     bool go_back_button;
     bool erase_chosen_planets_button;
+    Vector2 scrollBarVector;
+    Rectangle rectangleView;
 
     public:
     Delete_Planet_Menu_Controller(const unsigned, const unsigned, const unsigned);
