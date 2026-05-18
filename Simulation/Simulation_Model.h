@@ -60,13 +60,13 @@ class Simulation_Model{
 
     void setGoBack(const bool);
 
-    bool getAddPlanet() const;
+    // bool getAddPlanet() const;
 
-    void setAddPlanet(const bool);
+    // void setAddPlanet(const bool);
 
-    bool getDeletePlanet() const;
+    // bool getDeletePlanet() const;
 
-    void setDeletePlanet(const bool);
+    // void setDeletePlanet(const bool);
 
     bool getPause() const;
 

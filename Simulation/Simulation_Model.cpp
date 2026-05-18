@@ -73,21 +73,21 @@ void Simulation_Model::setGoBack(const bool new_value){
     this->go_back=new_value;
 }
 
-bool Simulation_Model::getAddPlanet() const{
-    return this->add_planet;
-}
+// bool Simulation_Model::getAddPlanet() const{
+//     return this->add_planet;
+// }
 
-void Simulation_Model::setAddPlanet(const bool new_value){
-    this->add_planet=new_value;
-}
+// void Simulation_Model::setAddPlanet(const bool new_value){
+//     this->add_planet=new_value;
+// }
 
-bool Simulation_Model::getDeletePlanet() const{
-    return this->delete_planet;
-}
+// bool Simulation_Model::getDeletePlanet() const{
+//     return this->delete_planet;
+// }
 
-void Simulation_Model::setDeletePlanet(const bool new_value){
-    this->delete_planet=new_value;
-}
+// void Simulation_Model::setDeletePlanet(const bool new_value){
+//     this->delete_planet=new_value;
+// }
 
 bool Simulation_Model::getPause() const{
     return this->pause;

@@ -13,7 +13,9 @@ class Delete_Planet_Menu_View{
 
     ~Delete_Planet_Menu_View();
 
-    void draw();
+    void drawMenu();
+
+    void drawAcceptMenu();
 };
 
 #endif

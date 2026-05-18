@@ -40,29 +40,22 @@ void Simulation_Controller::calcLogic(){
             if(!this->main_menu->getIsCameraLocked()){
                 UpdateCameraCustom(&camera, 1);
             }
-            //change later
             if(this->main_menu->getIsAddNewPlanetButtonClicked()){
-                this->simulation_model->setAddPlanet(true);
-            }
-            if(this->simulation_model->getAddPlanet()){
                 this->universe_controller->addTmpPlanet();
                 this->add_planet_menu=new Add_Planet_Menu_Controller(this->simulation_view->getWindowWidth(), this->simulation_view->getWindowHeight());
-                this->simulation_model->setAddPlanet(false);
                 this->simulation_model->setState(ADD_PLANET_MENU);
             }
-            //change later too!
             if(this->main_menu->getIsDeletePlanetButtonClicked()){
-                this->simulation_model->setDeletePlanet(true);
-            }
-            if(this->simulation_model->getDeletePlanet()){
                 this->delete_planet_menu=new Delete_Planet_Menu_Controller(this->simulation_view->getWindowWidth(), this->simulation_view->getWindowHeight(), this->getUniverseController()->getModel()->getPlanets().size());
-                this->simulation_model->setDeletePlanet(false);
                 this->simulation_model->setState(DELETE_PLANET_MENU);
             }
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
         case ADD_PLANET_MENU:{
             this->main_menu->calcLogic();
+            if(this->grid){
+                this->grid->calcLogic(this->getUniverseController()->getModel()->getPlanets());
+            }
             this->add_planet_menu->calcLogic();
             this->universe_controller->updateTmpPlanet(this->add_planet_menu->getMass(), this->add_planet_menu->getRadius(), \
             this->add_planet_menu->getDistanceFromCenter(), this->add_planet_menu->getVelocity(), this->add_planet_menu->getColor());
@@ -89,14 +82,21 @@ void Simulation_Controller::calcLogic(){
         case DELETE_PLANET_MENU:{
             this->main_menu->calcLogic();
 
+            if(this->grid){
+                this->grid->calcLogic(this->getUniverseController()->getModel()->getPlanets());
+            }
+
             if(!this->main_menu->getIsCameraLocked()){
                 UpdateCameraCustom(&camera, 1);
             }
-
+            
             if(this->delete_planet_menu->getErasingChosenPlanetsButton()){
-                //fill later
+                this->getUniverseController()->removePlanet(this->delete_planet_menu->getPlanetsToDelete());
             }
-            else if(this->delete_planet_menu->getGoBackButton()){
+
+            this->delete_planet_menu->calcLogic(this->getUniverseController()->getModel()->getPlanets());
+
+            if(this->delete_planet_menu->getGoBackButton()){
                 this->simulation_model->setState(SIMULATION);
                 delete this->delete_planet_menu;
                 this->delete_planet_menu=NULL;
