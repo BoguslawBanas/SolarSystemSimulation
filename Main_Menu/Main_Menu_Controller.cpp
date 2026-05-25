@@ -59,8 +59,26 @@ void Main_Menu_Controller::calcLogic(){
     if(IsKeyPressed(KEY_L)){
         this->lockUnlockCamera();
     }
-    if(IsKeyPressed(KEY_P)){
+    else if(IsKeyPressed(KEY_P)){
         this->pauseUnpauseSimulation();
+    }
+    else if(IsKeyDown(KEY_LEFT_CONTROL)){
+        if(IsKeyDown(KEY_LEFT_SHIFT)){
+            if(IsKeyPressed(KEY_S)){
+                //fast snapshot save (without confirm screen)
+            }
+            else if(IsKeyPressed(KEY_L)){
+                //fast snapshot load (without confirm screen)
+            }
+        }
+        else{
+            if(IsKeyPressed(KEY_S)){
+                //snapshot save (with confirm screen)
+            }
+            else if(IsKeyPressed(KEY_L)){
+                //snapshot load (with confirm screen)
+            }
+        }
     }
     this->slider->calcLogic();
 }
