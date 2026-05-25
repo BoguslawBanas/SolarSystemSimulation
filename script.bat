@@ -17,6 +17,7 @@
         Delete_Planet_Menu/*.cpp ^
         Start_Menu/*.cpp ^
         Options/*.cpp ^
+        File_Saver/*.cpp ^
     -pthread -lraylib -lgdi32 -lwinmm -lcomdlg32
 )
 

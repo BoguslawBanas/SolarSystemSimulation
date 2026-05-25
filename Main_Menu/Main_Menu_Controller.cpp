@@ -6,6 +6,8 @@ Main_Menu_Controller::Main_Menu_Controller(const unsigned window_width, const un
     this->slider=new Slider_Textfield_Menu_Controller(0.f, 100.f, Rectangle{window_width/3.f, 30, 100.f+window_width/6.f, 50}, Rectangle{window_width/2.f+150.f, 40, window_width/10.f, 30});
     this->is_camera_locked=false;
     this->is_simulation_paused=false;
+    this->save_snapshot=false;
+    this->load_snapshot=false;
     this->tmp_v=0.f;
 }
 
@@ -42,17 +44,31 @@ void Main_Menu_Controller::pauseUnpauseSimulation(){
 }
 
 bool Main_Menu_Controller::getIsAddNewPlanetButtonClicked() const{
-    const Rectangle bounds=this->menu_model->getAddPlanetButtonBounds();
-    const unsigned mouse_position_x=GetMousePosition().x;
-    const unsigned mouse_position_y=GetMousePosition().y;
-    return (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouse_position_x>=bounds.x && mouse_position_x<=bounds.x+bounds.width && mouse_position_y>=bounds.y && mouse_position_y<=bounds.y+bounds.width);
+    // const Rectangle bounds=this->menu_model->getAddPlanetButtonBounds();
+    // const unsigned mouse_position_x=GetMousePosition().x;
+    // const unsigned mouse_position_y=GetMousePosition().y;
+    // return (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouse_position_x>=bounds.x && mouse_position_x<=bounds.x+bounds.width && mouse_position_y>=bounds.y && mouse_position_y<=bounds.y+bounds.width);
+    return this->add_planet_button;
 }
 
 bool Main_Menu_Controller::getIsDeletePlanetButtonClicked() const{
-    const Rectangle bounds=this->menu_model->getDeletePlanetButtonBounds();
-    const unsigned mouse_position_x=GetMousePosition().x;
-    const unsigned mouse_position_y=GetMousePosition().y;
-    return (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouse_position_x>=bounds.x && mouse_position_x<=bounds.x+bounds.width && mouse_position_y>=bounds.y && mouse_position_y<=bounds.y+bounds.width);
+    // const Rectangle bounds=this->menu_model->getDeletePlanetButtonBounds();
+    // const unsigned mouse_position_x=GetMousePosition().x;
+    // const unsigned mouse_position_y=GetMousePosition().y;
+    // return (IsMouseButtonPressed(MOUSE_BUTTON_LEFT) && mouse_position_x>=bounds.x && mouse_position_x<=bounds.x+bounds.width && mouse_position_y>=bounds.y && mouse_position_y<=bounds.y+bounds.width);
+    return this->delete_planet_button;
+}
+
+bool Main_Menu_Controller::saveSnapshot(){
+    bool tmp=this->save_snapshot;
+    this->save_snapshot=false;
+    return tmp;
+}
+
+bool Main_Menu_Controller::loadSnapshot(){
+    bool tmp=this->load_snapshot;
+    this->load_snapshot=false;
+    return tmp;
 }
 
 void Main_Menu_Controller::calcLogic(){
@@ -65,10 +81,10 @@ void Main_Menu_Controller::calcLogic(){
     else if(IsKeyDown(KEY_LEFT_CONTROL)){
         if(IsKeyDown(KEY_LEFT_SHIFT)){
             if(IsKeyPressed(KEY_S)){
-                //fast snapshot save (without confirm screen)
+                this->save_snapshot=true;
             }
             else if(IsKeyPressed(KEY_L)){
-                //fast snapshot load (without confirm screen)
+                this->load_snapshot=true;
             }
         }
         else{
@@ -85,5 +101,7 @@ void Main_Menu_Controller::calcLogic(){
 
 void Main_Menu_Controller::requestDrawing(){
     this->slider->requestDrawing();
-    this->menu_view->draw(this->is_camera_locked, this->menu_model->getAddPlanetButtonBounds(), this->menu_model->getDeletePlanetButtonBounds());
+    this->menu_view->draw(this->is_camera_locked);
+    this->add_planet_button=GuiButton(this->menu_model->getAddPlanetButtonBounds(), "Add new planet.");
+    this->delete_planet_button=GuiButton(this->menu_model->getDeletePlanetButtonBounds(), "Delete planet.");  
 }

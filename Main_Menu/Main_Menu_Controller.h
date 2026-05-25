@@ -12,6 +12,10 @@ class Main_Menu_Controller{
     Slider_Textfield_Menu_Controller *slider;
     bool is_camera_locked;
     bool is_simulation_paused;
+    bool add_planet_button;
+    bool delete_planet_button;
+    bool save_snapshot;
+    bool load_snapshot;
     float tmp_v;
 
     public:
@@ -30,6 +34,10 @@ class Main_Menu_Controller{
     bool getIsAddNewPlanetButtonClicked() const;
 
     bool getIsDeletePlanetButtonClicked() const;
+
+    bool saveSnapshot();
+
+    bool loadSnapshot();
 
     void calcLogic();
 

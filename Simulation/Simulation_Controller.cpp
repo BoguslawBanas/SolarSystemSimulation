@@ -26,6 +26,8 @@ void Simulation_Controller::calcLogic(){
                     this->music=LoadMusicStream("music/Aylex - Tension Rising (freetouse.com).mp3");
                     PlayMusicStream(this->music);
                     SetMusicVolume(this->music, 0.5f);
+
+                    this->file_saver=new File_Saver_Controller();
                 } break;
                 case START_MENU_EXIT:{
                     this->simulation_model->setState(EXIT);
@@ -48,6 +50,12 @@ void Simulation_Controller::calcLogic(){
             if(this->main_menu->getIsDeletePlanetButtonClicked()){
                 this->delete_planet_menu=new Delete_Planet_Menu_Controller(this->simulation_view->getWindowWidth(), this->simulation_view->getWindowHeight(), this->getUniverseController()->getModel()->getPlanets().size());
                 this->simulation_model->setState(DELETE_PLANET_MENU);
+            }
+            if(this->main_menu->saveSnapshot()){
+                if(this->file_saver->saveSnapshot(this->getUniverseController()->getModel())) printf("Save snapshot.\n"); //remove printf later 
+            }
+            else if(this->main_menu->loadSnapshot()){
+                //load snapshot
             }
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
@@ -247,6 +255,7 @@ Simulation_Controller::Simulation_Controller(const char *path){
     this->start_menu=new Start_Menu_Controller(window_width, window_height);
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
+    this->file_saver=NULL;
     this->is_esc_clicked=false;
 
     this->camera={0};
@@ -265,6 +274,7 @@ Simulation_Controller::~Simulation_Controller(){
     delete this->add_planet_menu;
     delete this->delete_planet_menu;
     delete this->options;
+    delete this->file_saver;
     UnloadMusicStream(this->music);
     CloseAudioDevice();
 }
