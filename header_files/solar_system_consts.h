@@ -52,4 +52,6 @@
 #define PATH_TO_URANUS_TEXTURE "textures/2k_uranus.jpg"
 #define PATH_TO_NEPTUNE_TEXTURE "textures/2k_neptune.jpg"
 
+#define SNAPSHOT_FILE_PATH "snapshot_file.sss"
+
 #endif

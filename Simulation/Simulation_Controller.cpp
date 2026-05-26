@@ -28,6 +28,7 @@ void Simulation_Controller::calcLogic(){
                     SetMusicVolume(this->music, 0.5f);
 
                     this->file_saver=new File_Saver_Controller();
+                    this->file_reader=new File_Reader_Controller();
                 } break;
                 case START_MENU_EXIT:{
                     this->simulation_model->setState(EXIT);
@@ -55,7 +56,7 @@ void Simulation_Controller::calcLogic(){
                 if(this->file_saver->saveSnapshot(this->getUniverseController()->getModel())) printf("Save snapshot.\n"); //remove printf later 
             }
             else if(this->main_menu->loadSnapshot()){
-                //load snapshot
+                if(this->file_reader->readSnapshot(this->getUniverseController()->getModifiableModel())) printf("Read snapshot.\n"); //remove printf later
             }
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
@@ -256,6 +257,7 @@ Simulation_Controller::Simulation_Controller(const char *path){
     this->add_planet_menu=NULL;
     this->delete_planet_menu=NULL;
     this->file_saver=NULL;
+    this->file_reader=NULL;
     this->is_esc_clicked=false;
 
     this->camera={0};
@@ -275,6 +277,7 @@ Simulation_Controller::~Simulation_Controller(){
     delete this->delete_planet_menu;
     delete this->options;
     delete this->file_saver;
+    delete this->file_reader;
     UnloadMusicStream(this->music);
     CloseAudioDevice();
 }

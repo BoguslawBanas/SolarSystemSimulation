@@ -1,31 +1,27 @@
 #include "File_Saver_Controller.h"
 
 void File_Saver_Controller::addPlanetToFile(FILE *file, Planet_Model const * const planet, long long int &checksum){
-    fprintf(file, "%d %d %d %d\n", planet->getColor().a, planet->getColor().b, planet->getColor().g, planet->getColor().r);
-    checksum+=(planet->getColor().a+planet->getColor().b+planet->getColor().g+planet->getColor().r);
+    checksum+=planet->calculateChecksum();
+    fprintf(file, "%hhu %hhu %hhu %hhu\n", planet->getColor().a, planet->getColor().b, planet->getColor().g, planet->getColor().r);
     fprintf(file, "%lf\n", planet->getMass());
-    checksum+=(long long int)planet->getMass();
     fprintf(file, "%s\n", planet->getName());
     fprintf(file, "%f %f %f\n", planet->getPosition().x, planet->getPosition().y, planet->getPosition().z);
-    checksum+=(long long int)planet->getPosition().x+(long long int)planet->getPosition().y+(long long int)planet->getPosition().z;
     fprintf(file, "%lf\n", planet->getRadius());
-    checksum+=(long long int)planet->getRadius();
     fprintf(file, "%s\n", planet->getTexturePath());
     fprintf(file, "%f %f %f\n", planet->getVelocity().x, planet->getVelocity().y, planet->getVelocity().z);
-    checksum+=(long long int)planet->getVelocity().x+(long long int)planet->getVelocity().y+(long long int)planet->getVelocity().z;
 }
 
 bool File_Saver_Controller::save(Universe_Model const * const universe, const char *path_to_file){
     long long int checksum=0;
     bool result=false;
-    int tmp_int;
+    int amount_of_planets;
 
     FILE *file=fopen(path_to_file, "wb");
     if(file){
         fprintf(file, "Solar system simulation.\n");
-        tmp_int=universe->getPlanets().size();
-        checksum+=tmp_int;
-        fprintf(file, "%d\n", tmp_int);
+        amount_of_planets=universe->getPlanets().size();
+        checksum+=amount_of_planets;
+        fprintf(file, "%d\n", amount_of_planets);
         for(Planet_Model* const planet : universe->getPlanets()){
             this->addPlanetToFile(file, planet, checksum);
         }

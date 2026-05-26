@@ -83,7 +83,7 @@ void Main_Menu_Controller::calcLogic(){
             if(IsKeyPressed(KEY_S)){
                 this->save_snapshot=true;
             }
-            else if(IsKeyPressed(KEY_L)){
+            else if(IsKeyPressed(KEY_R)){
                 this->load_snapshot=true;
             }
         }
@@ -91,7 +91,7 @@ void Main_Menu_Controller::calcLogic(){
             if(IsKeyPressed(KEY_S)){
                 //snapshot save (with confirm screen)
             }
-            else if(IsKeyPressed(KEY_L)){
+            else if(IsKeyPressed(KEY_R)){
                 //snapshot load (with confirm screen)
             }
         }

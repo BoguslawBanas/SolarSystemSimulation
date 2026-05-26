@@ -11,6 +11,7 @@
 #include "../Start_Menu/Start_Menu_Controller.h"
 #include "../Options/Options_Controller.h"
 #include "../File_Saver/File_Saver_Controller.h"
+#include "../File_Reader/File_Reader_Controller.h"
 
 class Simulation_Controller{
     private:
@@ -26,6 +27,7 @@ class Simulation_Controller{
     Start_Menu_Controller *start_menu;
     Options_Controller *options;
     File_Saver_Controller *file_saver;
+    File_Reader_Controller *file_reader;
     
     bool is_esc_clicked;
 

@@ -17,6 +17,8 @@ class Universe_Controller{
 
     const Universe_Model* const getModel() const;
 
+    Universe_Model* const getModifiableModel();
+
     void addPlanet(const Vector3, const Vector3, const double, const double, const Color, const char*, const char*);
 
     void addTmpPlanet();

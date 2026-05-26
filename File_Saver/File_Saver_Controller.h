@@ -2,9 +2,8 @@
 #define FILE_SAVER_CONTROLLER_H
 
 #include "../Universe/Universe_Controller.h"
+#include "../header_files/solar_system_consts.h"
 #include <stdio.h>
-
-#define SNAPSHOT_FILE_PATH "snapshot_file.sss"
 
 class File_Saver_Controller{
     private:

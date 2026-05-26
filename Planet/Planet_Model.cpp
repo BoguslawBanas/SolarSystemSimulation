@@ -158,3 +158,16 @@ void Planet_Model::confirmModel(){
         model.materials[MATERIAL_MAP_DIFFUSE].maps[0].color=tmp_color;
     }
 }
+
+long long int Planet_Model::calculateChecksum() const{
+    long long int checksum=0;
+    Color color=this->getColor();
+    Vector3 position=this->getPosition();
+    Vector3 velocity=this->getVelocity();
+    checksum+=(color.a+color.b+color.g+color.r);
+    checksum+=(long long int)this->getMass();
+    checksum+=(long long int)position.x+(long long int)position.y+(long long int)position.z;
+    checksum+=(long long int)this->getRadius();
+    checksum+=(long long int)velocity.x+(long long int)velocity.y+(long long int)velocity.z;
+    return checksum;
+}

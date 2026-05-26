@@ -18,6 +18,7 @@
         Start_Menu/*.cpp ^
         Options/*.cpp ^
         File_Saver/*.cpp ^
+        File_Reader/*.cpp ^
     -pthread -lraylib -lgdi32 -lwinmm -lcomdlg32
 )
 

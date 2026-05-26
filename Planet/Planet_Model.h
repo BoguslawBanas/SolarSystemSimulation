@@ -64,6 +64,8 @@ class Planet_Model{
     bool isCursorOnPlanet(const Camera3D&, const double, const double) const;
 
     void confirmModel();
+
+    long long int calculateChecksum() const;
 };
 
 #endif
