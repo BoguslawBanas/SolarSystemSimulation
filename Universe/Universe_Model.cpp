@@ -40,11 +40,15 @@ void Universe_Model::addPlanet(const Planet_Model &planet){
 }
 
 
-void Universe_Model::removePlanet(const std::vector<int>&planet_numbers){
+void Universe_Model::removePlanets(){
     int already_removed=0;
-    for(int it : planet_numbers){
-        this->planets.erase(this->planets.begin()+it-already_removed);
-        ++already_removed;
+    for(int i=0;i<this->planets.size();++i){
+        if(this->planets[i-already_removed]->getCheckToErase()){
+            delete this->planets[i-already_removed];
+            this->planets[i-already_removed]=NULL;
+            this->planets.erase(this->planets.begin()+i-already_removed);
+            ++already_removed;
+        }
     }
 }
 
@@ -59,12 +63,16 @@ void Universe_Model::createTmpPlanet(){
     this->tmp_planet=new Planet_Model();
 }
 
-void Universe_Model::updateTmpPlanet(const double mass, const double radius, const Vector3& distance_from_center, const Vector3& velocity, const Color &color){
+void Universe_Model::updateTmpPlanetProperties(const double mass, const double radius, const Vector3& distance_from_center, const Vector3& velocity, const Color &color){
     this->tmp_planet->setMass(mass);
     this->tmp_planet->setRadius(radius);
     this->tmp_planet->setPosition(distance_from_center);
     this->tmp_planet->setVelocity(velocity);
     this->tmp_planet->setColor(color);
+}
+
+void Universe_Model::updateTmpPlanetName(const char *name){
+    this->tmp_planet->setName(name);
 }
 
 void Universe_Model::deleteTmpPlanet(){
@@ -100,4 +108,13 @@ void Universe_Model::calcNewPositionsOfPlanets(const float speed){
             this->calc_speed-=1.f;
         }
     }
+}
+
+const long long int Universe_Model::calculateChecksum() const{
+    long long int checksum=0;
+    checksum+=this->getPlanets().size();
+    for(const Planet_Model* const planet : this->getPlanets()){
+        checksum+=planet->calculateChecksum();
+    }
+    return checksum;
 }

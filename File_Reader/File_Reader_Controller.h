@@ -4,22 +4,21 @@
 #include "../Universe/Universe_Controller.h"
 #include "../header_files/solar_system_consts.h"
 #include <stdio.h>
-#include <vector>
 
 class File_Reader_Controller{
     private:
-    Planet_Model* getPlanetFromFile(FILE*, long long int&);
+    Planet_Model* getPlanetFromFile(FILE*);
 
-    bool read(Universe_Model* const , const char*);
+    Universe_Model* read(const char*);
 
     public:
     File_Reader_Controller();
 
     ~File_Reader_Controller();
 
-    bool readSnapshot(Universe_Model* const);
+    Universe_Model* readSnapshot();
 
-    bool readUniverse(Universe_Model* const, const char*);
+    Universe_Model* readUniverse(const char*);
 };
 
 #endif

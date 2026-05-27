@@ -56,7 +56,10 @@ void Simulation_Controller::calcLogic(){
                 if(this->file_saver->saveSnapshot(this->getUniverseController()->getModel())) printf("Save snapshot.\n"); //remove printf later 
             }
             else if(this->main_menu->loadSnapshot()){
-                if(this->file_reader->readSnapshot(this->getUniverseController()->getModifiableModel())) printf("Read snapshot.\n"); //remove printf later
+                Universe_Model *new_universe=this->file_reader->readSnapshot();
+                if(new_universe){
+                    this->getUniverseController()->setNewUniverseModel(new_universe, false);
+                }
             }
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
@@ -66,7 +69,7 @@ void Simulation_Controller::calcLogic(){
                 this->grid->calcLogic(this->getUniverseController()->getModel()->getPlanets());
             }
             this->add_planet_menu->calcLogic();
-            this->universe_controller->updateTmpPlanet(this->add_planet_menu->getMass(), this->add_planet_menu->getRadius(), \
+            this->universe_controller->updateTmpPlanetProperties(this->add_planet_menu->getMass(), this->add_planet_menu->getRadius(), \
             this->add_planet_menu->getDistanceFromCenter(), this->add_planet_menu->getVelocity(), this->add_planet_menu->getColor());
 
             if(!this->main_menu->getIsCameraLocked()){
@@ -74,6 +77,7 @@ void Simulation_Controller::calcLogic(){
             }
 
             if(this->add_planet_menu->getAcceptNewPlanetButton()){
+                this->universe_controller->updateTmpPlanetName(this->add_planet_menu->getName());
                 this->getUniverseController()->addTmpPlanetToUniverse();
                 this->simulation_model->setState(SIMULATION);
                 this->getUniverseController()->deleteTmpPlanet();
@@ -100,7 +104,7 @@ void Simulation_Controller::calcLogic(){
             }
             
             if(this->delete_planet_menu->getErasingChosenPlanetsButton()){
-                this->getUniverseController()->removePlanet(this->delete_planet_menu->getPlanetsToDelete());
+                this->getUniverseController()->removePlanets();
             }
 
             this->delete_planet_menu->calcLogic(this->getUniverseController()->getModel()->getPlanets());

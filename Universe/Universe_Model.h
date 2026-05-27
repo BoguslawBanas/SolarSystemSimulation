@@ -23,17 +23,21 @@ class Universe_Model{
 
     void addPlanet(const Planet_Model&);
 
-    void removePlanet(const std::vector<int>&);
+    void removePlanets();
 
     void removeAllPlanets();
 
     void createTmpPlanet();
 
-    void updateTmpPlanet(const double, const double, const Vector3&, const Vector3&, const Color&);
+    void updateTmpPlanetProperties(const double, const double, const Vector3&, const Vector3&, const Color&);
+
+    void updateTmpPlanetName(const char*);
 
     void deleteTmpPlanet();
 
     void calcNewPositionsOfPlanets(const float);
+
+    const long long int calculateChecksum() const;
 };
 
 #endif

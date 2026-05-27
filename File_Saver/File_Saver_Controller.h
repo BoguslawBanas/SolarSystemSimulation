@@ -7,7 +7,7 @@
 
 class File_Saver_Controller{
     private:
-    void addPlanetToFile(FILE*, Planet_Model const * const, long long int&);
+    void addPlanetToFile(FILE*, Planet_Model const * const);
 
     bool save(Universe_Model const * const, const char*);
 

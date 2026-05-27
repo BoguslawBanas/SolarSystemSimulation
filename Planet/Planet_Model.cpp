@@ -7,6 +7,7 @@ Planet_Model::Planet_Model(){
     this->mass=0.0;
     this->name[0]='\0';
     this->texture_path[0]='\0';
+    this->check_to_erase=false;
 
     this->texture=Texture2D{0};
     Mesh mesh=GenMeshSphere(this->radius, 32, 32);
@@ -19,18 +20,27 @@ Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const
     this->velocity=velocity;
     this->radius=radius;
     this->mass=mass;
+    this->check_to_erase=false;
     strncpy(this->name, name, 255);
     strncpy(this->texture_path, path_to_image, 511);
 
-    Image image=LoadImage(this->texture_path);
-    ImageFlipHorizontal(&image);
-    ImageRotateCCW(&image);
-    this->texture=LoadTextureFromImage(image);
-    UnloadImage(image);
+    if(IsFileExtension(this->texture_path, ".png;.jpg")){ //add later other extensions
+        Image image=LoadImage(this->texture_path);
+        ImageFlipHorizontal(&image);
+        ImageRotateCCW(&image);
+        this->texture=LoadTextureFromImage(image);
+        UnloadImage(image);
 
-    Mesh mesh=GenMeshSphere(this->radius, 32, 32);
-    this->model=LoadModelFromMesh(mesh);
-    SetMaterialTexture(&this->model.materials[0], MATERIAL_MAP_DIFFUSE, this->texture);
+        Mesh mesh=GenMeshSphere(this->radius, 32, 32);
+        this->model=LoadModelFromMesh(mesh);
+        SetMaterialTexture(&this->model.materials[0], MATERIAL_MAP_DIFFUSE, this->texture);
+    }
+    else{
+        this->texture=Texture2D{0};
+        Mesh mesh=GenMeshSphere(this->radius, 32, 32);
+        this->model=LoadModelFromMesh(mesh);
+        this->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].color=color;
+    }
 }
 
 Planet_Model::~Planet_Model(){
@@ -60,6 +70,14 @@ Color Planet_Model::getColor() const{
 
 const char* Planet_Model::getName() const{
     return this->name;
+}
+
+const bool Planet_Model::getCheckToErase() const{
+    return this->check_to_erase;
+}
+
+bool* Planet_Model::getPtrToCheckToErase(){
+    return &this->check_to_erase;
 }
 
 const char* Planet_Model::getTexturePath() const{
@@ -146,16 +164,22 @@ void Planet_Model::confirmModel(){
     Mesh mesh=GenMeshSphere(this->radius, 32, 32);
     this->model=LoadModelFromMesh(mesh);
 
-    if(this->texture_path[0]!='\0'){
+    if(IsFileExtension(this->texture_path, ".png;.jpg")){ //add later other extensions
         Image image=LoadImage(this->texture_path);
         ImageFlipHorizontal(&image);
         ImageRotateCCW(&image);
         this->texture=LoadTextureFromImage(image);
         UnloadImage(image);
+
+        Mesh mesh=GenMeshSphere(this->radius, 32, 32);
+        this->model=LoadModelFromMesh(mesh);
         SetMaterialTexture(&this->model.materials[0], MATERIAL_MAP_DIFFUSE, this->texture);
     }
     else{
-        model.materials[MATERIAL_MAP_DIFFUSE].maps[0].color=tmp_color;
+        this->texture=Texture2D{0};
+        Mesh mesh=GenMeshSphere(this->radius, 32, 32);
+        this->model=LoadModelFromMesh(mesh);
+        this->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].color=tmp_color;
     }
 }
 

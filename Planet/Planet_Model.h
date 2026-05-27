@@ -15,6 +15,7 @@ class Planet_Model{
     double mass;
     char name[256];
     char texture_path[512];
+    bool check_to_erase;
     Texture texture;
     Model model;
 
@@ -36,6 +37,10 @@ class Planet_Model{
     Color getColor() const;
 
     const char* getName() const;
+
+    const bool getCheckToErase() const;
+
+    bool* getPtrToCheckToErase();
 
     const char* getTexturePath() const;
 

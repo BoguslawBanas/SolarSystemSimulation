@@ -14,8 +14,14 @@ const Universe_Model* const Universe_Controller::getModel() const{
     return this->model;
 }
 
-Universe_Model* const Universe_Controller::getModifiableModel(){
-    return this->model;
+void Universe_Controller::setNewUniverseModel(Universe_Model *new_universe, const bool areModelsLoaded){
+    delete this->model;
+    this->model=new_universe;
+    if(!areModelsLoaded){
+        for(Planet_Model *planet : new_universe->getPlanets()){
+            planet->confirmModel();
+        }
+    }
 }
 
 void Universe_Controller::addPlanet(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name, const char *path_to_image){
@@ -23,8 +29,8 @@ void Universe_Controller::addPlanet(const Vector3 position, const Vector3 veloci
     this->model->addPlanet(planet_m);
 }
 
-void Universe_Controller::removePlanet(const std::vector<int>&planet_numbers){
-    this->model->removePlanet(planet_numbers);
+void Universe_Controller::removePlanets(){
+    this->model->removePlanets();
 }
 
 void Universe_Controller::removeAllPlanets(){
@@ -47,8 +53,12 @@ void Universe_Controller::updateNewPositionsOfPlanets(const float mult){
     this->model->calcNewPositionsOfPlanets(mult);
 }
 
-void Universe_Controller::updateTmpPlanet(const double mass, const double radius, const Vector3& distance_from_center, const Vector3& velocity, const Color &color){
-    this->model->updateTmpPlanet(mass, radius, distance_from_center, velocity, color);
+void Universe_Controller::updateTmpPlanetProperties(const double mass, const double radius, const Vector3& distance_from_center, const Vector3& velocity, const Color &color){
+    this->model->updateTmpPlanetProperties(mass, radius, distance_from_center, velocity, color);
+}
+
+void Universe_Controller::updateTmpPlanetName(const char *name){
+    this->model->updateTmpPlanetName(name);
 }
 
 const Planet_Model* Universe_Controller::findPlanetPointedAt(const Camera3D &camera) const{

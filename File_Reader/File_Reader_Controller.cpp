@@ -1,6 +1,6 @@
 #include "File_Reader_Controller.h"
 
-Planet_Model* File_Reader_Controller::getPlanetFromFile(FILE *file, long long int &checksum){
+Planet_Model* File_Reader_Controller::getPlanetFromFile(FILE *file){
     Color color;
     double mass, radius;
     char name[256];
@@ -9,9 +9,15 @@ Planet_Model* File_Reader_Controller::getPlanetFromFile(FILE *file, long long in
     fscanf(file, "%hhu %hhu %hhu %hhu\n", &color.a, &color.b, &color.g, &color.r);
     fscanf(file, "%lf\n", &mass);
     fscanf(file, "%s\n", name);
+    if(!strcmp(name, "/0")){
+        name[0]='\0';
+    }
     fscanf(file, "%f %f %f\n", &position.x, &position.y, &position.z);
     fscanf(file, "%lf\n", &radius);
     fscanf(file, "%s\n", path_to_texture);
+    if(!strcmp(name, "/0")){
+        path_to_texture[0]='\0';
+    }
     fscanf(file, "%f %f %f\n", &velocity.x, &velocity.y, &velocity.z);
 
     Planet_Model *planet=new Planet_Model();
@@ -22,64 +28,53 @@ Planet_Model* File_Reader_Controller::getPlanetFromFile(FILE *file, long long in
     planet->setRadius(radius);
     planet->setTexturePath(path_to_texture);
     planet->setVelocity(velocity);
-    checksum+=planet->calculateChecksum();
     return planet;
 }
 
-bool File_Reader_Controller::read(Universe_Model* const universe, const char *path_to_file){
-    long long int checksum=0;
+Universe_Model* File_Reader_Controller::read(const char *path_to_file){
     char tmp_s[256];
     int amount_of_planets;
     long long int checksum_from_file;
-    std::vector<Planet_Model*>planets;
+
+    Universe_Model *new_universe=new Universe_Model();
     FILE *file=fopen(path_to_file, "rb");
     if(file){
         fscanf(file, "%[^\n]s", tmp_s);
         if(strcmp(tmp_s, "Solar system simulation.")!=0){
             fclose(file);
-            return false; 
+            delete new_universe;
+            return NULL; 
         }
         fscanf(file, "%d", &amount_of_planets);
-        checksum+=amount_of_planets;
         for(int i=0;i<amount_of_planets;++i){
-            planets.push_back(this->getPlanetFromFile(file, checksum));
+            new_universe->addPlanet(this->getPlanetFromFile(file));
         }
+
+        const long long int checksum=new_universe->calculateChecksum();
 
         fscanf(file, "%lld", &checksum_from_file);
         fclose(file);
-        if(checksum_from_file==checksum){
-            //checksum is correct
-            universe->removeAllPlanets();
-            for(Planet_Model *model : planets){
-                model->confirmModel();
-                printf("Added planet: %s\n", model->getName());
-                universe->addPlanet(model);
-            }
-        }
-        else{
+        if(checksum_from_file!=checksum){
             //checksum is not correct
-            for(Planet_Model *model : planets){
-                delete model;
-                model=NULL;
-            }
-            planets.clear();
-            return false;
+            delete new_universe;
+            return NULL;
         }
     }
     else{
-        return false;
+        delete new_universe;
+        return NULL;
     }
-    return true;
+    return new_universe;
 }
 
 File_Reader_Controller::File_Reader_Controller(){}
 
 File_Reader_Controller::~File_Reader_Controller()=default;
 
-bool File_Reader_Controller::readSnapshot(Universe_Model* const universe){
-    return read(universe, SNAPSHOT_FILE_PATH);
+Universe_Model* File_Reader_Controller::readSnapshot(){
+    return read(SNAPSHOT_FILE_PATH);
 }
 
-bool File_Reader_Controller::readUniverse(Universe_Model* const universe, const char *path_to_file){
-    return read(universe, path_to_file);
+Universe_Model* File_Reader_Controller::readUniverse(const char *path_to_file){
+    return read(path_to_file);
 }

@@ -15,8 +15,6 @@ class Delete_Planet_Menu_Controller{
 
     Delete_Planet_Menu_Model *model;
     Delete_Planet_Menu_View *view;
-    unsigned amount_of_planets;
-    bool *list_of_checkboxes;
     bool go_back_button;
     bool erase_chosen_planets_button;
     bool go_back_button2;
@@ -33,8 +31,6 @@ class Delete_Planet_Menu_Controller{
     bool getErasingChosenPlanetsButton() const;
 
     bool getGoBackButton() const;
-
-    const std::vector<int> getPlanetsToDelete() const;
 
     void calcLogic(const std::vector<Planet_Model*>&);
 

@@ -17,7 +17,7 @@ class Universe_Controller{
 
     const Universe_Model* const getModel() const;
 
-    Universe_Model* const getModifiableModel();
+    void setNewUniverseModel(Universe_Model*, const bool);
 
     void addPlanet(const Vector3, const Vector3, const double, const double, const Color, const char*, const char*);
 
@@ -27,13 +27,15 @@ class Universe_Controller{
 
     void deleteTmpPlanet();
 
-    void removePlanet(const std::vector<int>&);
+    void removePlanets();
 
     void removeAllPlanets();
 
     void updateNewPositionsOfPlanets(const float);
 
-    void updateTmpPlanet(const double, const double, const Vector3&, const Vector3&, const Color&);
+    void updateTmpPlanetProperties(const double, const double, const Vector3&, const Vector3&, const Color&);
+
+    void updateTmpPlanetName(const char*);
 
     const Planet_Model* findPlanetPointedAt(const Camera3D&) const;
 
