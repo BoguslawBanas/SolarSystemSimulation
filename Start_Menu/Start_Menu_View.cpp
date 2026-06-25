@@ -25,6 +25,7 @@ void Start_Menu_View::drawStartMenu1(const Rectangle &button1, const Rectangle &
     EndMode3D();
 
     DrawText("Solar system simulation", 50, 50, 40, GREEN);
+    DrawText("Presented by: BoguslawBanas", 50, 100, 20, GRAY);
     GuiButton(button1, "Start simulation.");
     GuiButton(button2, "Settings.");
     GuiButton(button3, "Exit.");
@@ -48,6 +49,7 @@ void Start_Menu_View::drawStartMenu2(const Rectangle &button1, const Rectangle &
     EndMode3D();
 
     DrawText("Solar system simulation", 50, 50, 40, GREEN);
+    DrawText("Presented by: BoguslawBanas", 50, 100, 20, GRAY);
     GuiButton(button1, "Solar system.");
     GuiButton(button2, "Free mode.");
     GuiButton(button3, "Go back.");

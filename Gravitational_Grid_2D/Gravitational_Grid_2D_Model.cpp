@@ -10,18 +10,15 @@ Calc_Grid_Str::Calc_Grid_Str(){
 
 void* calcLogicSingleThread(void *arg){
     Calc_Grid_Str str=*(Calc_Grid_Str*)(arg);
+    const double threshold=0.01;
     double distance;
     double f;
-    double threshold=0.01;
-    double distance_after_gravity_is_smaller_than_threshold;
+    double distance_after_gravity_is_smaller_than_threshold=sqrt(G*str.mass*0.001/threshold);
 
-    int min_x, max_x, min_y, max_y;
-
-    distance_after_gravity_is_smaller_than_threshold=sqrt(G*str.mass*0.001/threshold);
-    min_x=int(ceilf((str.pos.x-distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
-    max_x=int(floorf((str.pos.x+distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
-    min_y=int(ceilf((str.pos.z-distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
-    max_y=int(floorf((str.pos.z+distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
+    int min_x=int(ceilf((str.pos.x-distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
+    int max_x=int(floorf((str.pos.x+distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
+    int min_y=int(ceilf((str.pos.z-distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
+    int max_y=int(floorf((str.pos.z+distance_after_gravity_is_smaller_than_threshold-str.start_pos)/str.grid_delta));
 
     for(int i=min_x;i<=max_x;++i){
         if(i>=0 && i<str.amount_of_nodes){
@@ -29,8 +26,8 @@ void* calcLogicSingleThread(void *arg){
                 if(j>=0 && j<str.amount_of_nodes){
                     distance=((str.pos.x-(i*str.grid_delta+str.start_pos))*(str.pos.x-(i*str.grid_delta+str.start_pos)))
                     +((str.pos.z-(j*str.grid_delta+str.start_pos))*(str.pos.z-(j*str.grid_delta+str.start_pos)));
-                    if(distance<1e4l){
-                        distance=1e4l;
+                    if(distance<1e4){
+                        distance=1e4;
                     }
                     f=G*(str.mass*0.001)/distance;
                     str.grid[i][j]-=f;
@@ -43,7 +40,7 @@ void* calcLogicSingleThread(void *arg){
 }
 
 double Gravitational_Grid_2D_Model::calcGridDelta(){
-    return 2*fabs(this->start_pos)/this->amount_of_nodes;
+    return 2.0*fabs(this->start_pos)/this->amount_of_nodes;
 }
 
 Gravitational_Grid_2D_Model::Gravitational_Grid_2D_Model(const double start_pos, const unsigned amount_of_nodes, const double default_grid_height){
@@ -58,6 +55,10 @@ Gravitational_Grid_2D_Model::Gravitational_Grid_2D_Model(const double start_pos,
         }
     }
     this->grid_delta=calcGridDelta();
+
+    this->amount_of_threads=0;
+    this->threads=new pthread_t[0];
+    this->calc_grid_strs=new Calc_Grid_Str[0];
 }
 
 Gravitational_Grid_2D_Model::~Gravitational_Grid_2D_Model(){
@@ -65,6 +66,8 @@ Gravitational_Grid_2D_Model::~Gravitational_Grid_2D_Model(){
         delete[] this->grid[i];
     }
     delete[] this->grid;
+    delete[] this->threads;
+    delete[] this->calc_grid_strs;
 }
 
 double Gravitational_Grid_2D_Model::getStartPosition() const{
@@ -94,57 +97,24 @@ void Gravitational_Grid_2D_Model::calcLogic(const std::vector<Planet_Model*>&pla
         }
     }
 
-    pthread_t *threads=new pthread_t[planets.size()];
-    Calc_Grid_Str *str=new Calc_Grid_Str[planets.size()];
-
-    for(int i=0;i<planets.size();++i){
-        str[i].pos=planets[i]->getPosition();
-        str[i].mass=planets[i]->getMass();
-        str[i].start_pos=this->start_pos;
-        str[i].amount_of_nodes=this->amount_of_nodes;
-        str[i].grid_delta=this->grid_delta;
-        str[i].grid=this->grid;
-
-        pthread_create(&threads[i], NULL, calcLogicSingleThread, &str[i]);
+    if(planets.size()!=this->amount_of_threads){
+        this->amount_of_threads=planets.size();
+        this->threads=(pthread_t*)realloc(this->threads, this->amount_of_threads*sizeof(pthread_t));
+        this->calc_grid_strs=(Calc_Grid_Str*)realloc(this->calc_grid_strs, this->amount_of_threads*sizeof(Calc_Grid_Str));
     }
 
-    for(int i=0;i<planets.size();++i){
-        pthread_join(threads[i], NULL);
+    for(int i=0;i<this->amount_of_threads;++i){
+        this->calc_grid_strs[i].pos=planets[i]->getPosition();
+        this->calc_grid_strs[i].mass=planets[i]->getMass();
+        this->calc_grid_strs[i].start_pos=this->start_pos;
+        this->calc_grid_strs[i].amount_of_nodes=this->amount_of_nodes;
+        this->calc_grid_strs[i].grid_delta=this->grid_delta;
+        this->calc_grid_strs[i].grid=this->grid;
+
+        pthread_create(&this->threads[i], NULL, calcLogicSingleThread, &this->calc_grid_strs[i]);
     }
 
-    delete[] str;
-    delete[] threads;
-
-    // double distance;
-    // double f;
-    // double threshold=0.01;
-    // double distance_after_gravity_is_smaller_than_threshold;
-
-    // int min_x, max_x, min_y, max_y;
-
-    // for(auto it : planets){
-    //     distance_after_gravity_is_smaller_than_threshold=sqrt(G*it->getMass()*0.001/threshold);
-    //     min_x=int(ceilf((it->getPosition().x-distance_after_gravity_is_smaller_than_threshold-this->start_pos)/this->grid_delta));
-    //     max_x=int(floorf((it->getPosition().x+distance_after_gravity_is_smaller_than_threshold-this->start_pos)/this->grid_delta));
-    //     min_y=int(ceilf((it->getPosition().z-distance_after_gravity_is_smaller_than_threshold-this->start_pos)/this->grid_delta));
-    //     max_y=int(floorf((it->getPosition().z+distance_after_gravity_is_smaller_than_threshold-this->start_pos)/this->grid_delta));
-
-    //     for(int i=min_x;i<=max_x;++i){
-    //         if(i>=0 && i<this->amount_of_nodes){
-    //             for(int j=min_y;j<=max_y;++j){
-    //                 if(j>=0 && j<this->amount_of_nodes){
-    //                     distance=((it->getPosition().x-(i*this->grid_delta+this->start_pos))*(it->getPosition().x-(i*this->grid_delta+this->start_pos)))
-    //                     +((it->getPosition().z-(j*this->grid_delta+this->start_pos))*(it->getPosition().z-(j*this->grid_delta+this->start_pos)));
-    //                     if(distance<1e4l){
-    //                         distance=1e4l;
-    //                     }
-    //                     f=G*(it->getMass()*0.001)/distance;
-    //                     this->grid[i][j]-=f;
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-
+    for(int i=0;i<this->amount_of_threads;++i){
+        pthread_join(this->threads[i], NULL);
+    }
 }

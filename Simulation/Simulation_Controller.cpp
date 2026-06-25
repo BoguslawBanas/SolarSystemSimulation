@@ -64,7 +64,7 @@ void Simulation_Controller::calcLogic(){
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
         case ADD_PLANET_MENU:{
-            this->main_menu->calcLogic();
+            // this->main_menu->calcLogic();
             if(this->grid){
                 this->grid->calcLogic(this->getUniverseController()->getModel()->getPlanets());
             }
@@ -93,7 +93,7 @@ void Simulation_Controller::calcLogic(){
             this->universe_controller->updateNewPositionsOfPlanets(this->main_menu->getSliderResult());
         } break;
         case DELETE_PLANET_MENU:{
-            this->main_menu->calcLogic();
+            // this->main_menu->calcLogic();
 
             if(this->grid){
                 this->grid->calcLogic(this->getUniverseController()->getModel()->getPlanets());

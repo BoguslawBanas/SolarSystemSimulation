@@ -26,6 +26,10 @@ class Gravitational_Grid_2D_Model{
     double grid_delta;
     float **grid;
 
+    int amount_of_threads;
+    pthread_t *threads;
+    Calc_Grid_Str *calc_grid_strs;
+
     double calcGridDelta();
 
     public:
