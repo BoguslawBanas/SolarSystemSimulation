@@ -18,11 +18,14 @@ class Planet_Model{
     bool check_to_erase;
     Texture texture;
     Model model;
+    float rotation_angle;
+    float rotation_speed;
+    float tilt;
 
     public:
     Planet_Model();
 
-    Planet_Model(const Vector3, const Vector3, const double, const double, const Color&, const char*, const char*);
+    Planet_Model(const Vector3, const Vector3, const double, const double, const Color&, const char*, const char*, const float, const float);
 
     ~Planet_Model();
 
@@ -46,6 +49,10 @@ class Planet_Model{
 
     const Model& getModel() const;
 
+    const float getRotationAngle() const;
+
+    const float getTilt() const;
+
     void setPosition(const Vector3);
 
     void setVelocity(const Vector3);
@@ -65,6 +72,8 @@ class Planet_Model{
     void calcVelocityFromGravity(Planet_Model&);
 
     void movePlanet();
+
+    void updateSpin();
     
     bool isCursorOnPlanet(const Camera3D&, const double, const double) const;
 

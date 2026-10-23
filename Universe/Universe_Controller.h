@@ -19,7 +19,7 @@ class Universe_Controller{
 
     void setNewUniverseModel(Universe_Model*, const bool);
 
-    void addPlanet(const Vector3, const Vector3, const double, const double, const Color, const char*, const char*);
+    void addPlanet(const Vector3, const Vector3, const double, const double, const Color, const char*, const char*, const float, const float);
 
     void addTmpPlanet();
 

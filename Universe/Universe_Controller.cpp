@@ -24,8 +24,8 @@ void Universe_Controller::setNewUniverseModel(Universe_Model *new_universe, cons
     }
 }
 
-void Universe_Controller::addPlanet(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name, const char *path_to_image){
-    Planet_Model *planet_m=new Planet_Model(position, velocity, radius, mass, color, name, path_to_image);
+void Universe_Controller::addPlanet(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name, const char *path_to_image, const float rotation_speed, const float tilt){
+    Planet_Model *planet_m=new Planet_Model(position, velocity, radius, mass, color, name, path_to_image, rotation_speed, tilt);
     this->model->addPlanet(planet_m);
 }
 

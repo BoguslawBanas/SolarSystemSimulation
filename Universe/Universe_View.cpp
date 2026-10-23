@@ -17,7 +17,7 @@ const float Universe_View::getRadiusDivider() const{
 
 void Universe_View::drawUniverse(const std::vector<Planet_Model*>&planets, const Planet_Model *tmp_planet, const Planet_Model *planet_pointed){
     for(auto it : planets){
-        Planet_View::draw(it->getModel(), it->getPosition(), this->distance_divider, this->radius_divider);
+        Planet_View::draw(it->getModel(), it->getPosition(), this->distance_divider, this->radius_divider, it->getRotationAngle(), it->getTilt());
     }
 
     if(planet_pointed){

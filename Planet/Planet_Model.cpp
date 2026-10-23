@@ -13,9 +13,12 @@ Planet_Model::Planet_Model(){
     Mesh mesh=GenMeshSphere(this->radius, 32, 32);
     this->model=LoadModelFromMesh(mesh);
     this->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].color=WHITE;
+    this->rotation_speed=0.f;
+    this->rotation_angle=0.f;
+    this->tilt=0.f;
 }
 
-Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color &color, const char *name, const char *path_to_image){
+Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color &color, const char *name, const char *path_to_image, const float rotation_speed, const float tilt){
     this->position=position;
     this->velocity=velocity;
     this->radius=radius;
@@ -41,6 +44,9 @@ Planet_Model::Planet_Model(const Vector3 position, const Vector3 velocity, const
         this->model=LoadModelFromMesh(mesh);
         this->model.materials[0].maps[MATERIAL_MAP_DIFFUSE].color=color;
     }
+    this->rotation_speed=rotation_speed;
+    this->rotation_angle=0.f;
+    this->tilt=tilt;
 }
 
 Planet_Model::~Planet_Model(){
@@ -88,6 +94,14 @@ const Model& Planet_Model::getModel() const{
     return this->model;
 }
 
+const float Planet_Model::getRotationAngle() const{
+    return this->rotation_angle;
+}
+
+const float Planet_Model::getTilt() const{
+    return this->tilt;
+}
+
 void Planet_Model::setPosition(Vector3 new_position){
     this->position=new_position;
 }
@@ -122,11 +136,20 @@ double Planet_Model::calcDistanceBetweenTwoPlanets(const Planet_Model &another_p
 
 void Planet_Model::calcVelocityFromGravity(Planet_Model &another_planet){
     double force=(G*this->getMass()*another_planet.getMass())/(this->calcDistanceBetweenTwoPlanets(another_planet));
-    double relative_distance=fabs(this->getPosition().x-another_planet.getPosition().x)+fabs(this->getPosition().y-another_planet.getPosition().y)+fabs(this->getPosition().z-another_planet.getPosition().z);
+    // double relative_distance=fabs(this->getPosition().x-another_planet.getPosition().x)+fabs(this->getPosition().y-another_planet.getPosition().y)+fabs(this->getPosition().z-another_planet.getPosition().z);
+    double x=this->getPosition().x-another_planet.getPosition().x;
+    double y=this->getPosition().y-another_planet.getPosition().y;
+    double z=this->getPosition().z-another_planet.getPosition().z;
+    double distance=sqrt(x*x+y*y+z*z);
 
-    double force_x=force*((fabs(this->getPosition().x-another_planet.getPosition().x))/relative_distance);
-    double force_y=force*((fabs(this->getPosition().y-another_planet.getPosition().y))/relative_distance);
-    double force_z=force*((fabs(this->getPosition().z-another_planet.getPosition().z))/relative_distance);
+    double force_x=force*((fabs(this->getPosition().x-another_planet.getPosition().x))/distance);
+    double force_y=force*((fabs(this->getPosition().y-another_planet.getPosition().y))/distance);
+    double force_z=force*((fabs(this->getPosition().z-another_planet.getPosition().z))/distance);
+
+    //test
+    // if(!strcmp(this->getName(), "Mercury")){
+    //     printf("%lf %lf %lf\n", force_x, force_y, force_z);
+    // }
 
     if(this->getPosition().x>another_planet.getPosition().x){
         force_x=-force_x;
@@ -144,6 +167,13 @@ void Planet_Model::calcVelocityFromGravity(Planet_Model &another_planet){
 
 void Planet_Model::movePlanet(){
     this->setPosition((Vector3){this->getPosition().x+this->getVelocity().x, this->getPosition().y+this->getVelocity().y, this->getPosition().z+this->getVelocity().z});
+}
+
+void Planet_Model::updateSpin(){
+    this->rotation_angle+=this->rotation_speed*GetFrameTime();
+    if(this->rotation_angle>=360.f){
+        this->rotation_angle-=360.f;
+    }
 }
     
 bool Planet_Model::isCursorOnPlanet(const Camera3D &camera, const double radius_divider, const double distance_divider) const{

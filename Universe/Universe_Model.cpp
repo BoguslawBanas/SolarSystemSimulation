@@ -104,6 +104,7 @@ void Universe_Model::calcNewPositionsOfPlanets(const float speed){
         
             for(auto it : this->planets){
                 it->movePlanet();
+                it->updateSpin();
             }
             this->calc_speed-=1.f;
         }

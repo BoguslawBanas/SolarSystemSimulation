@@ -4,8 +4,8 @@ Planet_Controller::Planet_Controller(){
     this->model=new Planet_Model();
 }
 
-Planet_Controller::Planet_Controller(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name, const char *path_to_image){
-    this->model=new Planet_Model(position, velocity, radius, mass, color, name, path_to_image);
+Planet_Controller::Planet_Controller(const Vector3 position, const Vector3 velocity, const double radius, const double mass, const Color color, const char *name, const char *path_to_image, const float rotation_speed, const float tilt){
+    this->model=new Planet_Model(position, velocity, radius, mass, color, name, path_to_image, rotation_speed, tilt);
 }
 
 Planet_Controller::~Planet_Controller(){
@@ -13,7 +13,7 @@ Planet_Controller::~Planet_Controller(){
 }
 
 void Planet_Controller::requestDrawing(const double distance_div, const double radius_div) const{
-    Planet_View::draw(this->model->getModel(), this->model->getPosition(), distance_div, radius_div);
+    Planet_View::draw(this->model->getModel(), this->model->getPosition(), distance_div, radius_div, this->model->getRotationAngle(), this->model->getTilt());
 }
 
 bool Planet_Controller::isCursorOnThePlanet(const Camera3D &camera, const double distance_div, const double radius_div) const{
